@@ -288,145 +288,6 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/15/数据库设计（一）数据库概述/" itemprop="url">
-                  数据库设计（一）数据库概述
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-07-15T21:51:29+08:00" content="2016-07-15">
-              2016-07-15
-            </time>
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2016/07/15/数据库设计（一）数据库概述/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/15/数据库设计（一）数据库概述/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="0-关键词"><a href="#0-关键词" class="headerlink" title="0. 关键词"></a>0. 关键词</h2><p>数据，数据库，数据库管理系统，数据库系统，数据库特点</p>
-<h2 id="1-What-数据库是什么"><a href="#1-What-数据库是什么" class="headerlink" title="1. What 数据库是什么"></a>1. What 数据库是什么</h2><p>数据库指的是以一定方式储存在一起、能为多个用户共享、具有尽可能小的冗余度（不是没有冗余）、与应用程序彼此独立的数据集合。</p>
-<h3 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h3><h3 id="1-1-1-与数据库相关的四个概念"><a href="#1-1-1-与数据库相关的四个概念" class="headerlink" title="1.1.1 与数据库相关的四个概念"></a>1.1.1 与数据库相关的四个概念</h3><h4 id="1-数据"><a href="#1-数据" class="headerlink" title="1) 数据"></a>1) 数据</h4><p>数据（Data）是数据库中存储的基本对象，是描述事物的符号记录。</p>
-<h4 id="2-数据库"><a href="#2-数据库" class="headerlink" title="2) 数据库"></a>2) 数据库</h4><p>数据库（DataBase, DB）是存储数据的仓库，是长期存放在计算机内（永久存储）、有组织的、可共享的大量数据的集合。</p>
-<h4 id="3-数据库管理系统"><a href="#3-数据库管理系统" class="headerlink" title="3) 数据库管理系统"></a>3) 数据库管理系统</h4><p>数据库管理系统（DataBase Management System, DBMS）是大型复杂的系统软件，它位于用户和操作系统之间。可提供但不限于提供以下功能：</p>
-<ul>
-<li>数据定义功能</li>
-<li>数据操纵功能</li>
-<li>数据控制功能</li>
-<li>数据组织、存储和管理功能</li>
-<li>事务管理和运行管理功能</li>
-<li>数据库的建立和维护功能</li>
-</ul>
-<h4 id="4-数据库系统"><a href="#4-数据库系统" class="headerlink" title="4) 数据库系统"></a>4) 数据库系统</h4><p>数据库系统（DataBase System, DBS）是一个综合的系统，一般有数据库、数据库管理系统及其开发工具、应用系统、数据管理员（DataBase Administrator, DBA）组成。</p>
-<h3 id="1-2-历史和发展"><a href="#1-2-历史和发展" class="headerlink" title="1.2 历史和发展"></a>1.2 历史和发展</h3><p>数据库技术的发展依赖于现实需求，同时也离不开计算机软件、硬件的发展的支持。计算机数据的管理先后经历了人工管理阶段、文件管理阶段，而后逐渐过渡到数据库管理阶段。</p>
-<h2 id="2-Why-为什么需要数据库"><a href="#2-Why-为什么需要数据库" class="headerlink" title="2. Why 为什么需要数据库"></a>2. Why 为什么需要数据库</h2><p>与人工管理和文件系统相比较，数据库提供了许多前两者不能提供的功能，数据库的数据面向的是现实世界，共享度高，数据冗余小，具有高度的物理独立性和一定程度上的逻辑独立性，数据使用数据模型来描述，整体结构化。提供了数据安全性、完整性、并发控制、恢复等高级功能。而这些功能都是用户迫切需要的。</p>
-<h3 id="2-1-数据结构化"><a href="#2-1-数据结构化" class="headerlink" title="2.1 数据结构化"></a>2.1 数据结构化</h3><p>数据内部的结构化，文件系统也可以做到，而数据库做到了数据整体的结构化。这就意味着数据之间是有联系的，就像现实世界的人脉关系。例如学校的信息系统，学校的信息系统要管理学生的学籍、选课、成绩的等，教职工的人事管理、工作量、科研等，校园内的一卡通系统的维护等等。而这一切又有着各种联系，因此这里面的学生和教职工数据不应面向某一具体应用。数据结构化不但要描述数据本身，也要描述数据之间的联系。</p>
-<h3 id="2-2-高共享，低冗余"><a href="#2-2-高共享，低冗余" class="headerlink" title="2.2 高共享，低冗余"></a>2.2 高共享，低冗余</h3><p>数据库中的数据面向的是整个系统而不是单一应用，因此可被多个用户、多个应用所共享。数据共享可降低数据的冗余度，节省存储空间，减少相同数据间的不一致的可能性。数据的不一致性主要是由于相同源数据在不同时期的不同拷贝和修改引起的，我想用word写过论文的同学深有体会吧。</p>
-<h3 id="2-3-高数据独立性"><a href="#2-3-高数据独立性" class="headerlink" title="2.3 高数据独立性"></a>2.3 高数据独立性</h3><p>数据独立性由DBMS的二级映像功能保证。<br>数据独立性包括：</p>
-<ul>
-<li>数据的物理独立性</li>
-<li>数据的逻辑独立性</li>
-</ul>
-<p>数据的物理独立性是指用户的应用程序和存储在数据库中的数据是相互独立的，数据怎么存储由DBMS管理，用户的应用程序不需要了解，应用程序只需要处理数据的逻辑结构。当数据的物理存储发生改变时，应用程序可以保持不变。</p>
-<p>数据的逻辑独立性是指用户的应用程序与数据库的逻辑结构是相互独立的，数据的逻辑结构发生改变，用户的应用程序也可以不变。</p>
-<p>使用数据库可使数据与程序独立，数据的定义和存取有DBMS提供，大大简化了程序的编码、修改和维护的复杂程度。</p>
-<h3 id="2-4-统一管理和控制"><a href="#2-4-统一管理和控制" class="headerlink" title="2.4 统一管理和控制"></a>2.4 统一管理和控制</h3><p>为了实现数据的并发共享DBMS提供了一系列的数据控制功能：</p>
-<p>1) 数据安全性保护<br>DBA可为数据库的用户分配不同的权限，使每个用户只能按照规定对数据库的某些数据按给定的方式进行操作和处理。而其他数据完全不可见。</p>
-<p>2) 数据完整性检查<br>数据完整性检查使数据之间始终满足一定的关系，使数据正确、有效和相容。</p>
-<p>3) 并发控制<br>并发控制会对多用户的并发进程同时存取、修改数据库数据加以控制和协调，防止用户操作相互干扰或者破坏数据库数据。</p>
-<p>4) 数据恢复<br>软硬件故障、操作失误或者蓄意破坏可影响数据库数据的正确性，或者使数据丢失。数据恢复可使数据库从错误状态恢复到某一已知的正确状态。</p>
-<h2 id="3-How-怎么设计数据库"><a href="#3-How-怎么设计数据库" class="headerlink" title="3. How 怎么设计数据库"></a>3. How 怎么设计数据库</h2><p>数据库设计一般需要经过以下几个阶段：</p>
-<ol>
-<li>需求分析</li>
-<li>概念结构设计</li>
-<li>逻辑结构设计</li>
-<li>物理结构设计</li>
-<li>数据库实施和维护</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
                 <a class="post-title-link" href="/2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/" itemprop="url">
                   UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系
                 </a>
@@ -481,15 +342,13 @@
             <h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>layoutSubviews, layoutIfNeeded, setNeedsLayout</p>
 <h2 id="layoutSubviews"><a href="#layoutSubviews" class="headerlink" title="layoutSubviews"></a>layoutSubviews</h2><h3 id="官方描述"><a href="#官方描述" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
 <ul>
-<li><p>The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any constraints you have set to determine the size and position of any subviews.</p>
-<p> 在iOS5.1及更早的版本中这个方法默认不执行。而在iOS5.1之后，此方法默认执行你在所有子视图中已经明确设置的所有尺寸和位置约束。</p>
-</li>
-<li><p>Subclasses can override this method as needed to perform more precise layout of their subviews. You should override this method only if the autoresizing and constraint-based behaviors of the subviews do not offer the behavior you want. You can use your implementation to set the frame rectangles of your subviews directly.</p>
-<p> 必要时可以在子类中重写这个方法，以实现更加精细的子视图布局。只要子视图的自动尺寸调整和基于约束系统行为不能提供你想要的效果，你就应该重写这个方法，直接设置子视图的frame（来实现你想要的效果）。</p>
-</li>
-<li><p>You should not call this method directly. If you want to force a layout update, call the <code>setNeedsLayout</code> method instead to do so prior to the next drawing update. If you want to update the layout of your views immediately, call the <code>layoutIfNeeded</code> method.</p>
-<p> 你不应该直接调用此方法，如果想强制更新布局，要调用 <code>setNeedsLayout</code> 方法，但该方法不会立即 <strong>重绘视图(drawing)</strong> 。如果想立即跟新 <strong>视图布局(layout)</strong> ，请调用 <code>layoutIfNeeded</code> 方法。</p>
-</li>
+<li>The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any constraints you have set to determine the size and position of any subviews.<br> 在iOS5.1及更早的版本中这个方法默认不执行。而在iOS5.1之后，此方法默认执行你在所有子视图中已经明确设置的所有尺寸和位置约束。</li>
+</ul>
+<ul>
+<li>Subclasses can override this method as needed to perform more precise layout of their subviews. You should override this method only if the autoresizing and constraint-based behaviors of the subviews do not offer the behavior you want. You can use your implementation to set the frame rectangles of your subviews directly.<br> 必要时可以在子类中重写这个方法，以实现更加精细的子视图布局。只要子视图的自动尺寸调整和基于约束系统行为不能提供你想要的效果，你就应该重写这个方法，直接设置子视图的frame（来实现你想要的效果）。</li>
+</ul>
+<ul>
+<li>You should not call this method directly. If you want to force a layout update, call the <code>setNeedsLayout</code> method instead to do so prior to the next drawing update. If you want to update the layout of your views immediately, call the <code>layoutIfNeeded</code> method.<br> 你不应该直接调用此方法，如果想强制更新布局，要调用 <code>setNeedsLayout</code> 方法，但该方法不会立即 <strong>重绘视图(drawing)</strong> 。如果想立即跟新 <strong>视图布局(layout)</strong> ，请调用 <code>layoutIfNeeded</code> 方法。</li>
 </ul>
 </blockquote>
 <h3 id="什么时候系统会执行layoutSubviews"><a href="#什么时候系统会执行layoutSubviews" class="headerlink" title="什么时候系统会执行layoutSubviews"></a>什么时候系统会执行layoutSubviews</h3><p>官方文档提到了layoutSubviews不是供用户来调用的，而是系统自动调用的，我们能做的就是重写该方法。那么什么时候系统会调用layoutSubviews方法呢？</p>
@@ -503,25 +362,19 @@
 <hr>
 <h2 id="layoutIfNeeded"><a href="#layoutIfNeeded" class="headerlink" title="layoutIfNeeded"></a>layoutIfNeeded</h2><h3 id="官方描述-1"><a href="#官方描述-1" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
 <ul>
-<li><p>Lays out the subviews immediately.</p>
-<p> 立即布局子视图。</p>
-</li>
+<li>Lays out the subviews immediately.<br> 立即布局子视图。</li>
 </ul>
 <ul>
-<li><p>Use this method to force the layout of subviews before drawing. Using the view that receives the message as the root view, this method lays out the view subtree starting at the root.</p>
-<p> 使用这个方法可以在系统绘制视图之前强制（重新）布局子视图。这个方法将从当前视图开始布局当前视图树之下的所有子视图。</p>
-</li>
+<li>Use this method to force the layout of subviews before drawing. Using the view that receives the message as the root view, this method lays out the view subtree starting at the root.<br> 使用这个方法可以在系统绘制视图之前强制（重新）布局子视图。这个方法将从当前视图开始布局当前视图树之下的所有子视图。</li>
 </ul>
 </blockquote>
 <hr>
 <h2 id="setNeedsLayout"><a href="#setNeedsLayout" class="headerlink" title="setNeedsLayout"></a>setNeedsLayout</h2><h3 id="官方描述-2"><a href="#官方描述-2" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
 <ul>
-<li><p>Invalidates the current layout of the receiver and triggers a layout update during the next update cycle.</p>
-<p> 在当前布局周期发送setNeedsLayout消息是无效的，直到下一个布局周期才会触发布局更新。</p>
-</li>
-<li><p>Call this method on your application’s main thread when you want to adjust the layout of a view’s subviews. This method makes a note of the request and returns immediately. Because this method does not force an immediate update, but instead waits for the next update cycle, you can use it to invalidate the layout of multiple views before any of those views are updated. This behavior allows you to consolidate all of your layout updates to one update cycle, which is usually better for performance.</p>
-<p>  当你想要调整子视图的布局时，你可以在应用的主线程调用该方法。这个方法将记录布局请求，并立即返回。由于该方法不强制立即更新，而是等到下一个更新周期，所以你可以在当前的无效周期内添加多个多个视图的布局，等到下一个周期同一更新。这么做通常可以获得更好的性能。</p>
-</li>
+<li>Invalidates the current layout of the receiver and triggers a layout update during the next update cycle.<br> 在当前布局周期发送setNeedsLayout消息是无效的，直到下一个布局周期才会触发布局更新。</li>
+</ul>
+<ul>
+<li>Call this method on your application’s main thread when you want to adjust the layout of a view’s subviews. This method makes a note of the request and returns immediately. Because this method does not force an immediate update, but instead waits for the next update cycle, you can use it to invalidate the layout of multiple views before any of those views are updated. This behavior allows you to consolidate all of your layout updates to one update cycle, which is usually better for performance.<br>  当你想要调整子视图的布局时，你可以在应用的主线程调用该方法。这个方法将记录布局请求，并立即返回。由于该方法不强制立即更新，而是等到下一个更新周期，所以你可以在当前的无效周期内添加多个多个视图的布局，等到下一个周期同一更新。这么做通常可以获得更好的性能。</li>
 </ul>
 </blockquote>
 
@@ -1052,6 +905,145 @@
 <li>联系：联系用菱形表示，菱形内写联系名，用直线于相关的实体型相连接，并在直线旁标清联系类型(1:1, 1:n, m:n)。<br>如图表示的是学生选课的实体联系及属性。</li>
 </ul>
 <p><img src="http://upload-images.jianshu.io/upload_images/656630-524b1cd0dc4cda10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="联系及属性E-R图"></p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/07/15/数据库设计（一）数据库概述/" itemprop="url">
+                  数据库设计（一）数据库概述
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-15T21:51:29+08:00" content="2015-07-15">
+              2015-07-15
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/15/数据库设计（一）数据库概述/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/15/数据库设计（一）数据库概述/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="0-关键词"><a href="#0-关键词" class="headerlink" title="0. 关键词"></a>0. 关键词</h2><p>数据，数据库，数据库管理系统，数据库系统，数据库特点</p>
+<h2 id="1-What-数据库是什么"><a href="#1-What-数据库是什么" class="headerlink" title="1. What 数据库是什么"></a>1. What 数据库是什么</h2><p>数据库指的是以一定方式储存在一起、能为多个用户共享、具有尽可能小的冗余度（不是没有冗余）、与应用程序彼此独立的数据集合。</p>
+<h3 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h3><h3 id="1-1-1-与数据库相关的四个概念"><a href="#1-1-1-与数据库相关的四个概念" class="headerlink" title="1.1.1 与数据库相关的四个概念"></a>1.1.1 与数据库相关的四个概念</h3><h4 id="1-数据"><a href="#1-数据" class="headerlink" title="1) 数据"></a>1) 数据</h4><p>数据（Data）是数据库中存储的基本对象，是描述事物的符号记录。</p>
+<h4 id="2-数据库"><a href="#2-数据库" class="headerlink" title="2) 数据库"></a>2) 数据库</h4><p>数据库（DataBase, DB）是存储数据的仓库，是长期存放在计算机内（永久存储）、有组织的、可共享的大量数据的集合。</p>
+<h4 id="3-数据库管理系统"><a href="#3-数据库管理系统" class="headerlink" title="3) 数据库管理系统"></a>3) 数据库管理系统</h4><p>数据库管理系统（DataBase Management System, DBMS）是大型复杂的系统软件，它位于用户和操作系统之间。可提供但不限于提供以下功能：</p>
+<ul>
+<li>数据定义功能</li>
+<li>数据操纵功能</li>
+<li>数据控制功能</li>
+<li>数据组织、存储和管理功能</li>
+<li>事务管理和运行管理功能</li>
+<li>数据库的建立和维护功能</li>
+</ul>
+<h4 id="4-数据库系统"><a href="#4-数据库系统" class="headerlink" title="4) 数据库系统"></a>4) 数据库系统</h4><p>数据库系统（DataBase System, DBS）是一个综合的系统，一般有数据库、数据库管理系统及其开发工具、应用系统、数据管理员（DataBase Administrator, DBA）组成。</p>
+<h3 id="1-2-历史和发展"><a href="#1-2-历史和发展" class="headerlink" title="1.2 历史和发展"></a>1.2 历史和发展</h3><p>数据库技术的发展依赖于现实需求，同时也离不开计算机软件、硬件的发展的支持。计算机数据的管理先后经历了人工管理阶段、文件管理阶段，而后逐渐过渡到数据库管理阶段。</p>
+<h2 id="2-Why-为什么需要数据库"><a href="#2-Why-为什么需要数据库" class="headerlink" title="2. Why 为什么需要数据库"></a>2. Why 为什么需要数据库</h2><p>与人工管理和文件系统相比较，数据库提供了许多前两者不能提供的功能，数据库的数据面向的是现实世界，共享度高，数据冗余小，具有高度的物理独立性和一定程度上的逻辑独立性，数据使用数据模型来描述，整体结构化。提供了数据安全性、完整性、并发控制、恢复等高级功能。而这些功能都是用户迫切需要的。</p>
+<h3 id="2-1-数据结构化"><a href="#2-1-数据结构化" class="headerlink" title="2.1 数据结构化"></a>2.1 数据结构化</h3><p>数据内部的结构化，文件系统也可以做到，而数据库做到了数据整体的结构化。这就意味着数据之间是有联系的，就像现实世界的人脉关系。例如学校的信息系统，学校的信息系统要管理学生的学籍、选课、成绩的等，教职工的人事管理、工作量、科研等，校园内的一卡通系统的维护等等。而这一切又有着各种联系，因此这里面的学生和教职工数据不应面向某一具体应用。数据结构化不但要描述数据本身，也要描述数据之间的联系。</p>
+<h3 id="2-2-高共享，低冗余"><a href="#2-2-高共享，低冗余" class="headerlink" title="2.2 高共享，低冗余"></a>2.2 高共享，低冗余</h3><p>数据库中的数据面向的是整个系统而不是单一应用，因此可被多个用户、多个应用所共享。数据共享可降低数据的冗余度，节省存储空间，减少相同数据间的不一致的可能性。数据的不一致性主要是由于相同源数据在不同时期的不同拷贝和修改引起的，我想用word写过论文的同学深有体会吧。</p>
+<h3 id="2-3-高数据独立性"><a href="#2-3-高数据独立性" class="headerlink" title="2.3 高数据独立性"></a>2.3 高数据独立性</h3><p>数据独立性由DBMS的二级映像功能保证。<br>数据独立性包括：</p>
+<ul>
+<li>数据的物理独立性</li>
+<li>数据的逻辑独立性</li>
+</ul>
+<p>数据的物理独立性是指用户的应用程序和存储在数据库中的数据是相互独立的，数据怎么存储由DBMS管理，用户的应用程序不需要了解，应用程序只需要处理数据的逻辑结构。当数据的物理存储发生改变时，应用程序可以保持不变。</p>
+<p>数据的逻辑独立性是指用户的应用程序与数据库的逻辑结构是相互独立的，数据的逻辑结构发生改变，用户的应用程序也可以不变。</p>
+<p>使用数据库可使数据与程序独立，数据的定义和存取有DBMS提供，大大简化了程序的编码、修改和维护的复杂程度。</p>
+<h3 id="2-4-统一管理和控制"><a href="#2-4-统一管理和控制" class="headerlink" title="2.4 统一管理和控制"></a>2.4 统一管理和控制</h3><p>为了实现数据的并发共享DBMS提供了一系列的数据控制功能：</p>
+<p>1) 数据安全性保护<br>DBA可为数据库的用户分配不同的权限，使每个用户只能按照规定对数据库的某些数据按给定的方式进行操作和处理。而其他数据完全不可见。</p>
+<p>2) 数据完整性检查<br>数据完整性检查使数据之间始终满足一定的关系，使数据正确、有效和相容。</p>
+<p>3) 并发控制<br>并发控制会对多用户的并发进程同时存取、修改数据库数据加以控制和协调，防止用户操作相互干扰或者破坏数据库数据。</p>
+<p>4) 数据恢复<br>软硬件故障、操作失误或者蓄意破坏可影响数据库数据的正确性，或者使数据丢失。数据恢复可使数据库从错误状态恢复到某一已知的正确状态。</p>
+<h2 id="3-How-怎么设计数据库"><a href="#3-How-怎么设计数据库" class="headerlink" title="3. How 怎么设计数据库"></a>3. How 怎么设计数据库</h2><p>数据库设计一般需要经过以下几个阶段：</p>
+<ol>
+<li>需求分析</li>
+<li>概念结构设计</li>
+<li>逻辑结构设计</li>
+<li>物理结构设计</li>
+<li>数据库实施和维护</li>
+</ol>
 
           
         

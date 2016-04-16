@@ -64,7 +64,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="-iOS," />
+  <meta name="keywords" content="-数据库," />
 
 
 
@@ -80,25 +80,49 @@
 
 
 
-<meta name="description" content="关键词layoutSubviews, layoutIfNeeded, setNeedsLayout
-layoutSubviews官方描述
+<meta name="description" content="关键词三级模式，两级映象
+What模式
 
-The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any cons">
+引入在数据模型中有型(Type)和值(Value)的概念。型就是某一类数据结构和属性的说明，值就是具体的赋值。
+
+
+
+模式模式(Schema)是数据库中全体数据的逻辑结构和特征描述，是数据库的型。
+
+实例模式的一个具体值称为模式的一个实例(Instance)，同一个模式可以有多个实例。
+
+模式与实例的关系模式是相对稳定的，而实例是不断变化的；模式反映的是数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系">
-<meta property="og:url" content="http://yoursite.com/2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/index.html">
+<meta property="og:title" content="数据库设计（三）数据库系统结构">
+<meta property="og:url" content="http://yoursite.com/2015/08/10/数据库设计（三）数据库系统结构/index.html">
 <meta property="og:site_name" content="GurgleSSH">
-<meta property="og:description" content="关键词layoutSubviews, layoutIfNeeded, setNeedsLayout
-layoutSubviews官方描述
+<meta property="og:description" content="关键词三级模式，两级映象
+What模式
 
-The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any cons">
-<meta property="og:updated_time" content="2016-04-16T08:33:10.000Z">
+引入在数据模型中有型(Type)和值(Value)的概念。型就是某一类数据结构和属性的说明，值就是具体的赋值。
+
+
+
+模式模式(Schema)是数据库中全体数据的逻辑结构和特征描述，是数据库的型。
+
+实例模式的一个具体值称为模式的一个实例(Instance)，同一个模式可以有多个实例。
+
+模式与实例的关系模式是相对稳定的，而实例是不断变化的；模式反映的是数">
+<meta property="og:updated_time" content="2016-04-16T08:36:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系">
-<meta name="twitter:description" content="关键词layoutSubviews, layoutIfNeeded, setNeedsLayout
-layoutSubviews官方描述
+<meta name="twitter:title" content="数据库设计（三）数据库系统结构">
+<meta name="twitter:description" content="关键词三级模式，两级映象
+What模式
 
-The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any cons">
+引入在数据模型中有型(Type)和值(Value)的概念。型就是某一类数据结构和属性的说明，值就是具体的赋值。
+
+
+
+模式模式(Schema)是数据库中全体数据的逻辑结构和特征描述，是数据库的型。
+
+实例模式的一个具体值称为模式的一个实例(Instance)，同一个模式可以有多个实例。
+
+模式与实例的关系模式是相对稳定的，而实例是不断变化的；模式反映的是数">
 
 
 
@@ -116,7 +140,7 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
   };
 </script>
 
-  <title> UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系 | GurgleSSH </title>
+  <title> 数据库设计（三）数据库系统结构 | GurgleSSH </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -295,7 +319,7 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
             
             
               
-                UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系
+                数据库设计（三）数据库系统结构
               
             
           </h1>
@@ -307,8 +331,8 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-04-16T16:21:37+08:00" content="2016-04-16">
-              2016-04-16
+            <time itemprop="dateCreated" datetime="2015-08-10T10:35:08+08:00" content="2015-08-10">
+              2015-08-10
             </time>
           </span>
 
@@ -318,8 +342,8 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/" itemprop="commentsCount"></span>
+                <a href="/2015/08/10/数据库设计（三）数据库系统结构/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/10/数据库设计（三）数据库系统结构/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -342,44 +366,56 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
       
 
       
-        <h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>layoutSubviews, layoutIfNeeded, setNeedsLayout</p>
-<h2 id="layoutSubviews"><a href="#layoutSubviews" class="headerlink" title="layoutSubviews"></a>layoutSubviews</h2><h3 id="官方描述"><a href="#官方描述" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
+        <h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>三级模式，两级映象</p>
+<h2 id="What"><a href="#What" class="headerlink" title="What"></a>What</h2><h3 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h3><blockquote>
 <ul>
-<li>The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any constraints you have set to determine the size and position of any subviews.<br> 在iOS5.1及更早的版本中这个方法默认不执行。而在iOS5.1之后，此方法默认执行你在所有子视图中已经明确设置的所有尺寸和位置约束。</li>
-</ul>
-<ul>
-<li>Subclasses can override this method as needed to perform more precise layout of their subviews. You should override this method only if the autoresizing and constraint-based behaviors of the subviews do not offer the behavior you want. You can use your implementation to set the frame rectangles of your subviews directly.<br> 必要时可以在子类中重写这个方法，以实现更加精细的子视图布局。只要子视图的自动尺寸调整和基于约束系统行为不能提供你想要的效果，你就应该重写这个方法，直接设置子视图的frame（来实现你想要的效果）。</li>
-</ul>
-<ul>
-<li>You should not call this method directly. If you want to force a layout update, call the <code>setNeedsLayout</code> method instead to do so prior to the next drawing update. If you want to update the layout of your views immediately, call the <code>layoutIfNeeded</code> method.<br> 你不应该直接调用此方法，如果想强制更新布局，要调用 <code>setNeedsLayout</code> 方法，但该方法不会立即 <strong>重绘视图(drawing)</strong> 。如果想立即跟新 <strong>视图布局(layout)</strong> ，请调用 <code>layoutIfNeeded</code> 方法。</li>
+<li>引入<br>在数据模型中有型(Type)和值(Value)的概念。型就是某一类数据结构和属性的说明，值就是具体的赋值。</li>
 </ul>
 </blockquote>
-<h3 id="什么时候系统会执行layoutSubviews"><a href="#什么时候系统会执行layoutSubviews" class="headerlink" title="什么时候系统会执行layoutSubviews"></a>什么时候系统会执行layoutSubviews</h3><p>官方文档提到了layoutSubviews不是供用户来调用的，而是系统自动调用的，我们能做的就是重写该方法。那么什么时候系统会调用layoutSubviews方法呢？</p>
-<ol>
-<li>调用 <code>addSubview</code> 方法时会执行该方法。</li>
-<li>设置并改变子视图的frame属性时会触发该方法。</li>
-<li>滑动UIScrollView及继承与UIScrollView的控件时会触发该方法。</li>
-<li>旋转屏幕时，会触发父视图的layoutSubviews方法。</li>
-<li>设置并改变视图的frame属性时会触发父视图的layoutSubviews方法。</li>
-</ol>
-<hr>
-<h2 id="layoutIfNeeded"><a href="#layoutIfNeeded" class="headerlink" title="layoutIfNeeded"></a>layoutIfNeeded</h2><h3 id="官方描述-1"><a href="#官方描述-1" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
 <ul>
-<li>Lays out the subviews immediately.<br> 立即布局子视图。</li>
+<li><p>模式<br>模式(Schema)是数据库中全体数据的逻辑结构和特征描述，是数据库的型。</p>
+</li>
+<li><p>实例<br>模式的一个具体值称为模式的一个实例(Instance)，同一个模式可以有多个实例。</p>
+</li>
+<li><p>模式与实例的关系<br>模式是相对稳定的，而实例是不断变化的；模式反映的是数据的结构及其联系，而实例反映的是数据库某一刻的状态。</p>
+</li>
 </ul>
+<h3 id="三级模式结构"><a href="#三级模式结构" class="headerlink" title="三级模式结构"></a>三级模式结构</h3><blockquote>
 <ul>
-<li>Use this method to force the layout of subviews before drawing. Using the view that receives the message as the root view, this method lays out the view subtree starting at the root.<br> 使用这个方法可以在系统绘制视图之前强制（重新）布局子视图。这个方法将从当前视图开始布局当前视图树之下的所有子视图。</li>
+<li>数据库系统由外模式、模式、内模式三级构成。</li>
+<li>数据库系统的三级模式是对数据的三个抽象级别，三级模式把数据的具体组织交给DBMS管理，使用户不必关心数据在计算机当中如何表示，如何存储，用户可专注于数据的逻辑抽象。</li>
 </ul>
 </blockquote>
-<hr>
-<h2 id="setNeedsLayout"><a href="#setNeedsLayout" class="headerlink" title="setNeedsLayout"></a>setNeedsLayout</h2><h3 id="官方描述-2"><a href="#官方描述-2" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
+<h4 id="1-外模式"><a href="#1-外模式" class="headerlink" title="1. 外模式"></a>1. 外模式</h4><p>外模式（亦称子模式或者用户模式），是数据库用户能够看到和使用的局部数据的逻辑结构和特征的描述。外模式保证了数据库的安全性，每个用户只能看到和访问对应外模式中的数据，数据库的其他数据对该用户均不可见。</p>
+<p>一般地，</p>
+<blockquote>
 <ul>
-<li>Invalidates the current layout of the receiver and triggers a layout update during the next update cycle.<br> 在当前布局周期发送setNeedsLayout消息是无效的，直到下一个布局周期才会触发布局更新。</li>
-</ul>
-<ul>
-<li>Call this method on your application’s main thread when you want to adjust the layout of a view’s subviews. This method makes a note of the request and returns immediately. Because this method does not force an immediate update, but instead waits for the next update cycle, you can use it to invalidate the layout of multiple views before any of those views are updated. This behavior allows you to consolidate all of your layout updates to one update cycle, which is usually better for performance.<br>  当你想要调整子视图的布局时，你可以在应用的主线程调用该方法。这个方法将记录布局请求，并立即返回。由于该方法不强制立即更新，而是等到下一个更新周期，所以你可以在当前的无效周期内添加多个多个视图的布局，等到下一个周期同一更新。这么做通常可以获得更好的性能。</li>
+<li>外模式是模式的的子集，一个数据库可以有多个外模式。</li>
+<li>对模式中的同一数据，在外模式中也可以不同。</li>
+<li>一个外模式可以被多个应用程序所使用，一个应用程序只能使用一个外模式。</li>
 </ul>
 </blockquote>
+<p>DBMS提供子模式描述语言（子模式DDL）来严格定义子模式。</p>
+<h4 id="2-模式"><a href="#2-模式" class="headerlink" title="2. 模式"></a>2. 模式</h4><p>模式（亦称逻辑模式）是数据库全体数据的逻辑结构和特征描述，是所用用户的公共数据视图。是数据库系统结构的中间层，既不涉及数据的物理存储细节，也不涉及具体的应用程序、开发工具和语言。</p>
+<p>模式是数据库在逻辑级的视图，一个数据库<strong>只有一个模式</strong>，定义模式时要考虑数据的逻辑结构和数据间的联系，定义数据的安全性和完整性。</p>
+<p>DBMS提供模式描述语言（模式DDL）来严格定义模式。</p>
+<h4 id="3-内模式"><a href="#3-内模式" class="headerlink" title="3. 内模式"></a>3. 内模式</h4><p>一个数据库只有一个内模式（亦称存储模式），内模式是数据物理结构和存储方式的描述，是数据库中数据的内部表示方式。</p>
+<p>DBMS提供内模式描述语言（内模式DDL）来严格定义内模式。</p>
+<h3 id="两级映象"><a href="#两级映象" class="headerlink" title="两级映象"></a>两级映象</h3><p>为了能够在系统内部实现数据在3个抽象层次的联系和转换DBMS在三级模式之间提供两级映像功能：</p>
+<blockquote>
+<ul>
+<li>外模式/模式映像</li>
+<li>模式/内模式映像</li>
+</ul>
+</blockquote>
+<p>其中外模式/模式映像保证了数据和程序之间的<strong>逻辑独立性</strong>；模式/内模式映像保证了数据和程序之间的<strong>物理独立性</strong>。</p>
+<h4 id="1-外模式-模式映像"><a href="#1-外模式-模式映像" class="headerlink" title="1. 外模式/模式映像"></a>1. 外模式/模式映像</h4><p>模式描述数据的全局逻辑结构，外模式描述数据的局部逻辑结构。同一个模式可以有多个外模式，每一个外模式在数据库系统中都有一个对应外模式/模式映像，它定义了外外模式与模式之间的对应关系。映像的定义通常包含在各自外模式的描述中。</p>
+<p>当模式改变时，DBA可以对各个外模式/模式映像做相应的改变，从而使外模式保持不变，应用程序是依赖于外模式编写的，所以应用程序可以不修改。所以说外模式/模式映像保证了数据和程序之间的逻辑独立性。</p>
+<h4 id="2-模式-内模式映像"><a href="#2-模式-内模式映像" class="headerlink" title="2. 模式/内模式映像"></a>2. 模式/内模式映像</h4><p>数据库模式和内模式都只有一个，因此模式/内模式映像也是唯一的，模式/内模式映像定义了数据全局逻辑结构与存储结构的对应关系。当数据库的存储方式发生变化时，由DBA对模式/内模式映像做相应的改变，可使模式保持不变，进而使外模式也保持不变，最后可达到应用程序不变的目的。所以说模式/内模式映像保证了数据和程序之间的物理独立性。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>在数据库的三级模式中，<strong>模式</strong>是全局的逻辑结构，它作为中间层独立于其它两层，在设计数据库模式结构时要首先确定数据库的逻辑结构。</p>
+<p>数据库的<strong>内模式</strong>依赖于它的模式（全局逻辑结构），独立于外模式，也独立于具体的存储设备。它将模式定义的数据结构和联系按照一定的存储策略进行组织，从而达到较好的时间和空间效率。</p>
+<p>数据库的<strong>外模式</strong>面向具体的应用程序，它定义在模式之上，因此可以独立于存储模式和存储设备。</p>
+<p>数据库的<strong>二级映像</strong>保证了数据库外模式的稳定性，进而保证了依赖于特定外模式的应用程序的稳定性。一般情况下，只要应用程序的需求不变，应用程序就可以不用修改。</p>
 
       
     </div>
@@ -400,7 +436,7 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
       
         <div class="post-tags">
           
-            <a href="/tags/iOS/" rel="tag">#-iOS</a>
+            <a href="/tags/数据库/" rel="tag">#-数据库</a>
           
         </div>
       
@@ -409,13 +445,17 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/12/经典进程的同步问题/" rel="next" title="经典进程的同步问题">
-                <i class="fa fa-chevron-left"></i> 经典进程的同步问题
+              <a href="/2015/08/09/数据库设计（二）数据模型/" rel="next" title="数据库设计（二）数据模型">
+                <i class="fa fa-chevron-left"></i> 数据库设计（二）数据模型
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/12/进程同步/" rel="prev" title="进程同步">
+                进程同步 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -467,8 +507,8 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/"
-           data-title="UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系" data-url="http://yoursite.com/2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/">
+      <div class="ds-thread" data-thread-key="2015/08/10/数据库设计（三）数据库系统结构/"
+           data-title="数据库设计（三）数据库系统结构" data-url="http://yoursite.com/2015/08/10/数据库设计（三）数据库系统结构/">
       </div>
     
   </div>
@@ -554,7 +594,7 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词"><span class="nav-number">1.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layoutSubviews"><span class="nav-number">2.</span> <span class="nav-text">layoutSubviews</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方描述"><span class="nav-number">2.1.</span> <span class="nav-text">官方描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么时候系统会执行layoutSubviews"><span class="nav-number">2.2.</span> <span class="nav-text">什么时候系统会执行layoutSubviews</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#layoutIfNeeded"><span class="nav-number">3.</span> <span class="nav-text">layoutIfNeeded</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方描述-1"><span class="nav-number">3.1.</span> <span class="nav-text">官方描述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setNeedsLayout"><span class="nav-number">4.</span> <span class="nav-text">setNeedsLayout</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方描述-2"><span class="nav-number">4.1.</span> <span class="nav-text">官方描述</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关键词"><span class="nav-number">1.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What"><span class="nav-number">2.</span> <span class="nav-text">What</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模式"><span class="nav-number">2.1.</span> <span class="nav-text">模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三级模式结构"><span class="nav-number">2.2.</span> <span class="nav-text">三级模式结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-外模式"><span class="nav-number">2.2.1.</span> <span class="nav-text">1. 外模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-模式"><span class="nav-number">2.2.2.</span> <span class="nav-text">2. 模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-内模式"><span class="nav-number">2.2.3.</span> <span class="nav-text">3. 内模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两级映象"><span class="nav-number">2.3.</span> <span class="nav-text">两级映象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-外模式-模式映像"><span class="nav-number">2.3.1.</span> <span class="nav-text">1. 外模式/模式映像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-模式-内模式映像"><span class="nav-number">2.3.2.</span> <span class="nav-text">2. 模式/内模式映像</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">3.</span> <span class="nav-text">Summary</span></a></li></ol></div>
             
           </div>
         </section>

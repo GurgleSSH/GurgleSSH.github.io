@@ -361,7 +361,7 @@
           关键词layoutSubviews, layoutIfNeeded, setNeedsLayout
 layoutSubviews官方描述
 
-The default implementation of this method does nothing on iOS 5.1 and earlier. O
+The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any constraints you have set to determine the size and pos
           ...
 
           <div class="post-more-link text-center">
@@ -488,7 +488,11 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
           
           本文摘自汤小丹主编《计算机操作系统》（第三版）2.4 经典进程的同步问
 
-在多道程序环境下,进程同步问题十分重要,也是相当有趣的问题,因而吸引了不少 学者对它进行研究,由此而产生了一系列经典的进程同步问题,其中较有代表性的是“生 产者—消费者”问题、“读者—写者问题”、“哲学家进餐问题”等等。通过对
+在多道程序环境下,进程同步问题十分重要,也是相当有趣的问题,因而吸引了不少 学者对它进行研究,由此而产生了一系列经典的进程同步问题,其中较有代表性的是“生 产者—消费者”问题、“读者—写者问题”、“哲学家进餐问题”等等。通过对这些问题的研 究和学习,可以帮助我们更好地理解进程同步的概念及实现方法。
+
+
+生产者—消费者问题
+前面我们已经对生产者—消费者问题(The proceducer-consumer problem)做了
           ...
 
           <div class="post-more-link text-center">
@@ -615,7 +619,8 @@ The default implementation of this method does nothing on iOS 5.1 and earlier. O
           
            本文摘自汤小丹主编《计算机操作系统》（第三版）2.3 进程同步 
 
-在 OS 中引入进程后,虽然提高了资源的利用率和系统的吞吐量,但由于进程的异步性, 也会给系统造成混乱,尤其是在他们争用临界资源时。例如,当多个进程去争用一台打印 机时,有可能使多个进程的输出结果交织在一起,难于区分;而当多个进程
+在 OS 中引入进程后,虽然提高了资源的利用率和系统的吞吐量,但由于进程的异步性, 也会给系统造成混乱,尤其是在他们争用临界资源时。例如,当多个进程去争用一台打印 机时,有可能使多个进程的输出结果交织在一起,难于区分;而当多个进程去争用共享变 量、表格、链表时,有可能致使数据处理出错。进程同步的主要任务是对多个相关进程在 执行次序上进行协调,以使并发执行的诸进程之间能有效地共享资源和相互合作,从而使 程序的执行具有可再现性。
+
           ...
 
           <div class="post-more-link text-center">
@@ -749,7 +754,14 @@ What模式
 
 模式模式(Schema)是数据库中全体数据的逻辑结构和特征描述，是数据库的型。
 
-实例模式的一个具体值称为模式的一个实例(Instance)
+实例模式的一个具体值称为模式的一个实例(Instance)，同一个模式可以有多个实例。
+
+模式与实例的关系模式是相对稳定的，而实例是不断变化的；模式反映的是数据的结构及其联系，而实例反映的是数据库某一刻的状态。
+
+
+三级模式结构
+
+数据库系统由外模式、模式、
           ...
 
           <div class="post-more-link text-center">
@@ -887,7 +899,12 @@ What模式
 1.2 数据模型的分类
 概念模型
 逻辑模型
-物理
+物理模型（不讨论）
+
+1.2.1 概念模型
+概念模型是站在用户的角度对数据进行建模，主要用于数据库设计。
+
+1) 实体（Entity）客观存在并相互区别的事物称为实体，实体可以是具体的事物也可以是抽象的概
           ...
 
           <div class="post-more-link text-center">
@@ -1014,7 +1031,9 @@ What模式
           
           0. 关键词数据，数据库，数据库管理系统，数据库系统，数据库特点
 1. What 数据库是什么数据库指的是以一定方式储存在一起、能为多个用户共享、具有尽可能小的冗余度（不是没有冗余）、与应用程序彼此独立的数据集合。
-1.1 概念1.1.1 与数据库相关的四个概念1) 数据数据（Data）是数据库中存
+1.1 概念1.1.1 与数据库相关的四个概念1) 数据数据（Data）是数据库中存储的基本对象，是描述事物的符号记录。
+2) 数据库数据库（DataBase, DB）是存储数据的仓库，是长期存放在计算机内（永久存储）、有组织的、可共享的大量数据的集合。
+3) 数据库管理系统数据库管
           ...
 
           <div class="post-more-link text-center">

@@ -288,6 +288,917 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/" itemprop="url">
+                  UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-16T16:21:37+08:00" content="2016-04-16">
+              2016-04-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/16/UIView的layoutSubviews、layoutIfNeeded、setNeedsLayout区别和联系/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>layoutSubviews, layoutIfNeeded, setNeedsLayout</p>
+<h2 id="layoutSubviews"><a href="#layoutSubviews" class="headerlink" title="layoutSubviews"></a>layoutSubviews</h2><h3 id="官方描述"><a href="#官方描述" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
+<ul>
+<li>The default implementation of this method does nothing on iOS 5.1 and earlier. Otherwise, the default implementation uses any constraints you have set to determine the size and position of any subviews.<br> 在iOS5.1及更早的版本中这个方法默认不执行。而在iOS5.1之后，此方法默认执行你在所有子视图中已经明确设置的所有尺寸和位置约束。</li>
+</ul>
+<ul>
+<li>Subclasses can override this method as needed to perform more precise layout of their subviews. You should override this method only if the autoresizing and constraint-based behaviors of the subviews do not offer the behavior you want. You can use your implementation to set the frame rectangles of your subviews directly.<br> 必要时可以在子类中重写这个方法，以实现更加精细的子视图布局。只要子视图的自动尺寸调整和基于约束系统行为不能提供你想要的效果，你就应该重写这个方法，直接设置子视图的frame（来实现你想要的效果）。</li>
+</ul>
+<ul>
+<li>You should not call this method directly. If you want to force a layout update, call the <code>setNeedsLayout</code> method instead to do so prior to the next drawing update. If you want to update the layout of your views immediately, call the <code>layoutIfNeeded</code> method.<br> 你不应该直接调用此方法，如果想强制更新布局，要调用 <code>setNeedsLayout</code> 方法，但该方法不会立即 <strong>重绘视图(drawing)</strong> 。如果想立即跟新 <strong>视图布局(layout)</strong> ，请调用 <code>layoutIfNeeded</code> 方法。</li>
+</ul>
+</blockquote>
+<h3 id="什么时候系统会执行layoutSubviews"><a href="#什么时候系统会执行layoutSubviews" class="headerlink" title="什么时候系统会执行layoutSubviews"></a>什么时候系统会执行layoutSubviews</h3><p>官方文档提到了layoutSubviews不是供用户来调用的，而是系统自动调用的，我们能做的就是重写该方法。那么什么时候系统会调用layoutSubviews方法呢？</p>
+<ol>
+<li>调用 <code>addSubview</code> 方法时会执行该方法。</li>
+<li>设置并改变子视图的frame属性时会触发该方法。</li>
+<li>滑动UIScrollView及继承与UIScrollView的控件时会触发该方法。</li>
+<li>旋转屏幕时，会触发父视图的layoutSubviews方法。</li>
+<li>设置并改变视图的frame属性时会触发父视图的layoutSubviews方法。</li>
+</ol>
+<hr>
+<h2 id="layoutIfNeeded"><a href="#layoutIfNeeded" class="headerlink" title="layoutIfNeeded"></a>layoutIfNeeded</h2><h3 id="官方描述-1"><a href="#官方描述-1" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
+<ul>
+<li>Lays out the subviews immediately.<br> 立即布局子视图。</li>
+</ul>
+<ul>
+<li>Use this method to force the layout of subviews before drawing. Using the view that receives the message as the root view, this method lays out the view subtree starting at the root.<br> 使用这个方法可以在系统绘制视图之前强制（重新）布局子视图。这个方法将从当前视图开始布局当前视图树之下的所有子视图。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="setNeedsLayout"><a href="#setNeedsLayout" class="headerlink" title="setNeedsLayout"></a>setNeedsLayout</h2><h3 id="官方描述-2"><a href="#官方描述-2" class="headerlink" title="官方描述"></a>官方描述</h3><blockquote>
+<ul>
+<li>Invalidates the current layout of the receiver and triggers a layout update during the next update cycle.<br> 在当前布局周期发送setNeedsLayout消息是无效的，直到下一个布局周期才会触发布局更新。</li>
+</ul>
+<ul>
+<li>Call this method on your application’s main thread when you want to adjust the layout of a view’s subviews. This method makes a note of the request and returns immediately. Because this method does not force an immediate update, but instead waits for the next update cycle, you can use it to invalidate the layout of multiple views before any of those views are updated. This behavior allows you to consolidate all of your layout updates to one update cycle, which is usually better for performance.<br>  当你想要调整子视图的布局时，你可以在应用的主线程调用该方法。这个方法将记录布局请求，并立即返回。由于该方法不强制立即更新，而是等到下一个更新周期，所以你可以在当前的无效周期内添加多个多个视图的布局，等到下一个周期同一更新。这么做通常可以获得更好的性能。</li>
+</ul>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/12/经典进程的同步问题/" itemprop="url">
+                  经典进程的同步问题
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-12T19:05:21+08:00" content="2016-04-12">
+              2016-04-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/12/经典进程的同步问题/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/12/经典进程的同步问题/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong>本文摘自汤小丹主编《计算机操作系统》（第三版）2.4 经典进程的同步问</strong></p>
+<blockquote>
+<p>在多道程序环境下,进程同步问题十分重要,也是相当有趣的问题,因而吸引了不少 学者对它进行研究,由此而产生了一系列经典的进程同步问题,其中较有代表性的是“生 产者—消费者”问题、“读者—写者问题”、“哲学家进餐问题”等等。通过对这些问题的研 究和学习,可以帮助我们更好地理解进程同步的概念及实现方法。</p>
+</blockquote>
+<hr>
+<h2 id="生产者—消费者问题"><a href="#生产者—消费者问题" class="headerlink" title="生产者—消费者问题"></a>生产者—消费者问题</h2><blockquote>
+<p>前面我们已经对生产者—消费者问题(The proceducer-consumer problem)做了一些描述, 但未考虑进程的互斥与同步问题,因而造成了数据(Counter)的不定性。由于生产者—消费者 问题是相互合作的进程关系的一种抽象,例如,在输入时,输入进程是生产者,计算进程 是消费者;而在输出时,计算进程是生产者,而打印进程是消费者。因此,该问题有很大 的代表性及实用价值。本小节将利用信号量机制来解决生产者—消费者问题。</p>
+</blockquote>
+<h3 id="利用记录型信号量解决生产者—消费者问题"><a href="#利用记录型信号量解决生产者—消费者问题" class="headerlink" title="利用记录型信号量解决生产者—消费者问题"></a>利用记录型信号量解决生产者—消费者问题</h3><p>假定在生产者和消费者之间的公用缓冲池中,具有 n 个缓冲区,这时可利用互斥信号 量 mutex 实现诸进程对缓冲池的互斥使用。利用信号量 empty 和 full 分别表示缓冲池中空缓 冲区和满缓冲区的数量。又假定这些生产者和消费者相互等效,只要缓冲池未满,生产者 便可将消息送入缓冲池;只要缓冲池未空,消费者便可从缓冲池中取走一个消息。对生产 者—消费者问题可描述如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Var mutex,empty,full: semaphore:=1,n,0;</span><br><span class="line">buffer:array[0,...,n-1] of item; </span><br><span class="line">	in,out: integer:=0,0;</span><br><span class="line">	begin</span><br><span class="line">		parbegin </span><br><span class="line">			proceducer: begin</span><br><span class="line">							repeat</span><br><span class="line">								...</span><br><span class="line">							producer an item nextp;</span><br><span class="line">								... </span><br><span class="line">							wait(empty); </span><br><span class="line">							wait(mutex); </span><br><span class="line">							buffer(in):=nextp;</span><br><span class="line">							in:=(in+1) mod n; </span><br><span class="line">							signal(mutex); </span><br><span class="line">							signal(full);</span><br><span class="line">							until false;</span><br><span class="line">						end </span><br><span class="line">			consumer: begin</span><br><span class="line">  						repeat</span><br><span class="line">							wait(full);</span><br><span class="line">							wait(mutex); </span><br><span class="line">							nextc:=buffer(out); </span><br><span class="line">							out:=(out+1) mod n; </span><br><span class="line">							signal(mutex); </span><br><span class="line">							signal(empty);</span><br><span class="line">							consumer the item in nextc;</span><br><span class="line">						 until false; </span><br><span class="line">					   end</span><br><span class="line">		parend </span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+<p>在生产者—消费者问题中应注意:首先,在每个程序中用于实现互斥的 wait(mutex)和 signal(mutex)必须成对地出现;其次,对资源信号量 empty 和 full 的 wait 和 signal 操作,同 样需要成对地出现,但它们分别处于不同的程序中。例如,wait(empty)在计算进程中,而 signal(empty)则在打印进程中,计算进程若因执行 wait(empty)而阻塞,则以后将由打印进程 将它唤醒;最后,在每个程序中的多个 wait 操作顺序不能颠倒,应先执行对资源信号量的 wait 操作,然后再执行对互斥信号量的 wait 操作,否则可能引起进程死锁。</p>
+<h3 id="利用-AND-信号量解决生产者—消费者问题"><a href="#利用-AND-信号量解决生产者—消费者问题" class="headerlink" title="利用 AND 信号量解决生产者—消费者问题"></a>利用 AND 信号量解决生产者—消费者问题</h3><p>对于生产者—消费者问题,也可利用 AND 信号量来解决,即用 Swait(empty,mutex) 来代替wait(empty)和wait(mutex);用Ssignal(mutex,full)来代替signal(mutex)和signal(full); 用 Swait(full,mutex)来代替 wait(full)和 wait(mutex),以及用 Ssignal(mutex,empty)代替 Signal(mutex)和 Signal(empty)。利用 AND 信号量来解决生产者—消费者问题的算法描述 如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Var mutex,empty,full: semaphore:=1,n,0;</span><br><span class="line"> 	buffer:array[0,...,n-1] of item;</span><br><span class="line">	in out: integer:=0,0;</span><br><span class="line">	begin</span><br><span class="line">		parbegin</span><br><span class="line">			producer: begin </span><br><span class="line">						repeat</span><br><span class="line">							...</span><br><span class="line">							produce an item in nextp;</span><br><span class="line">							...</span><br><span class="line">							Swait(empty,mutex);</span><br><span class="line"></span><br><span class="line">						</span><br><span class="line">							buffer(in):=nextp; </span><br><span class="line">							in:=(in+1)mod n;</span><br><span class="line">							Ssignal(mutex,full);</span><br><span class="line">						 until false; </span><br><span class="line">					   end</span><br><span class="line">			consumer:begin </span><br><span class="line">						repeat</span><br><span class="line">							Swait(full,mutex); </span><br><span class="line">							Nextc:=buffer(out); </span><br><span class="line">							Out:=(out+1) mod n; </span><br><span class="line">							Ssignal(mutex,empty); </span><br><span class="line">							consumer the item in nextc;</span><br><span class="line">						until false; </span><br><span class="line">					  end</span><br><span class="line">		parend </span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+<h3 id="利用管程解决生产者—消费者问题"><a href="#利用管程解决生产者—消费者问题" class="headerlink" title="利用管程解决生产者—消费者问题"></a>利用管程解决生产者—消费者问题</h3><p>在利用管程方法来解决生产者—消费者问题时,首先便是为它们建立一个管程,并命 名为 ProclucerConsumer,或简称为 PC。其中包括两个过程:</p>
+<ol>
+<li>put(item)过程。生产者利用该过程将自己生产的产品投放到缓冲池中,并用整型变 量 count 来表示在缓冲池中已有的产品数目,当 count≥n 时,表示缓冲池已满,生产者须 等待。</li>
+<li>get(item)过程。消费者利用该过程从缓冲池中取出一个产品,当count≤0时,表示 缓冲池中已无可取用的产品,消费者应等待。</li>
+</ol>
+<p>PC 管程可描述如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">type producer-consumer=monitor</span><br><span class="line">	Var in,out,count: integer;</span><br><span class="line">		buffer: array[0, ..., n-1] of item; 		notfull,notempty:condition; </span><br><span class="line">		procedure entry put(item)</span><br><span class="line">			begin</span><br><span class="line">				if count&gt;=n then notfull.wait;</span><br><span class="line">					buffer(in):=nextp; </span><br><span class="line">					in:=(in+1) mod n;</span><br><span class="line">					count:=count+1;</span><br><span class="line">					if notempty.queue then notempty.signal; </span><br><span class="line">					end</span><br><span class="line">		procedure entry get(item) </span><br><span class="line">			begin</span><br><span class="line">				if count&lt;=0 then notempty.wait; 				nextc:=buffer(out); </span><br><span class="line">				out:=(out+1) mod n; </span><br><span class="line">				count:=count-1;</span><br><span class="line">				if notfull.quene then notfull.signal; </span><br><span class="line">			end</span><br><span class="line">		begin in:=out:=0; </span><br><span class="line">	count:=0</span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+<p>在利用管程解决生产者—消费者问题时,其中的生产者和消费者可描述为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">producer: begin </span><br><span class="line">			 repeat</span><br><span class="line">				 produce an item in nextp;</span><br><span class="line">				 PC.put(item); </span><br><span class="line">				 until false;</span><br><span class="line">		  end </span><br><span class="line">consumer: begin</span><br><span class="line">			 repeat</span><br><span class="line"> 			 	 PC.get(item);</span><br><span class="line">				 consume the item in nextc;</span><br><span class="line">			 until false; </span><br><span class="line">		  end</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="哲学家进餐问题"><a href="#哲学家进餐问题" class="headerlink" title="哲学家进餐问题"></a>哲学家进餐问题</h2><blockquote>
+<p>由 Dijkstra 提出并解决的哲学家进餐问题(The Dinning Philosophers Problem)是典型的同 步问题。该问题是描述有五个哲学家共用一张圆桌,分别坐在周围的五张椅子上,在圆桌 上有五个碗和五只筷子,他们的生活方式是交替地进行思考和进餐。平时,一个哲学家进 行思考,饥饿时便试图取用其左右最靠近他的筷子,只有在他拿到两只筷子时才能进餐。 进餐完毕,放下筷子继续思考。</p>
+</blockquote>
+<h3 id="利用记录型信号量解决哲学家进餐问题"><a href="#利用记录型信号量解决哲学家进餐问题" class="headerlink" title="利用记录型信号量解决哲学家进餐问题"></a>利用记录型信号量解决哲学家进餐问题</h3><p>经分析可知,放在桌子上的筷子是临界资源,在一段时间内只允许一位哲学家使用。 为了实现对筷子的互斥使用,可以用一个信号量表示一只筷子,由这五个信号量构成信号 量数组。其描述如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Var chopstick: array[0,...,4] of semaphore;</span><br></pre></td></tr></table></figure>
+<p>所有信号量均被初始化为 1,第 i 位哲学家的活动可描述为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">repeat</span><br><span class="line">	wait(chopstick[i]); </span><br><span class="line">	wait(chopstick[(i+1)mod 5]);</span><br><span class="line">		... </span><br><span class="line">	eat;</span><br><span class="line">		...</span><br><span class="line">	signal(chopstick[i]); </span><br><span class="line">	signal(chopstick[(i+1)mod 5]);</span><br><span class="line">		... </span><br><span class="line">	think;</span><br><span class="line">until false;</span><br></pre></td></tr></table></figure>
+<p>在以上描述中,当哲学家饥饿时,总是先去拿他左边的筷子,即执行 wait(chopstick[i]);<br>成功后,再去拿他右边的筷子,即执行 wait(chopstick[(i+1)mod 5]);又成功后便可进餐。进 餐完毕,又先放下他左边的筷子,然后再放右边的筷子。虽然,上述解法可保证不会有两 个相邻的哲学家同时进餐,但有可能引起死锁。假如五位哲学家同时饥饿而各自拿起左边 的筷子时,就会使五个信号量 chopstick 均为 0; 当他们再试图去拿右边的筷子时,都将因 无筷子可拿而无限期地等待。对于这样的死锁问题,可采取以下几种解决方法:</p>
+<ol>
+<li>至多只允许有四位哲学家同时去拿左边的筷子,最终能保证至少有一位哲学家能够 进餐,并在用毕时能释放出他用过的两只筷子,从而使更多的哲学家能够进餐。</li>
+<li>仅当哲学家的左、右两只筷子均可用时,才允许他拿起筷子进餐。</li>
+<li>规定奇数号哲学家先拿他左边的筷子,然后再去拿右边的筷子,而偶数号哲学家则 相反。按此规定,将是 1、2 号哲学家竞争 1 号筷子;3、4 号哲学家竞争 3 号筷子。即五位 哲学家都先竞争奇数号筷子,获得后,再去竞争偶数号筷子,最后总会有一位哲学家能获 得两只筷子而进餐。</li>
+</ol>
+<h3 id="利用-AND-信号量机制解决哲学家进餐问题"><a href="#利用-AND-信号量机制解决哲学家进餐问题" class="headerlink" title="利用 AND 信号量机制解决哲学家进餐问题"></a>利用 AND 信号量机制解决哲学家进餐问题</h3><p>在哲学家进餐问题中,要求每个哲学家先获得两个临界资源(筷子)后方能进餐,这在本 质上就是前面所介绍的 AND 同步问题,故用 AND 信号量机制可获得最简洁的解法。描述 如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Var chopsiick array of semaphore:=(1,1,1,1,1);</span><br><span class="line">	processi</span><br><span class="line">		repeat </span><br><span class="line">			think;</span><br><span class="line">			Sswait(chopstick[(i+1)mod 5],chopstick[i]); </span><br><span class="line">			eat;</span><br><span class="line">			Ssignat(chopstick[(i+1)mod 5],chopstick[i]);</span><br><span class="line">		until false;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="读者—写者问题"><a href="#读者—写者问题" class="headerlink" title="读者—写者问题"></a>读者—写者问题</h2><blockquote>
+<p>一个数据文件或记录,可被多个进程共享,我们把只要求读该文件的进程称为“Reader 进程”,其他进程则称为“Writer 进程”。允许多个进程同时读一个共享对象,因为读操作不 会使数据文件混乱。但不允许一个 Writer 进程和其他 Reader 进程或 Writer 进程同时访问共 享对象,因为这种访问将会引起混乱。所谓“读者—写者问题(Reader-Writer Problem)”是 指保证一个 Writer 进程必须与其他进程互斥地访问共享对象的同步问题。读者—写者问题 常被用来测试新同步原语。</p>
+</blockquote>
+<h3 id="利用记录型信号量解决读者—写者问题"><a href="#利用记录型信号量解决读者—写者问题" class="headerlink" title="利用记录型信号量解决读者—写者问题"></a>利用记录型信号量解决读者—写者问题</h3><p>为实现 Reader 与 Writer 进程间在读或写时的互斥而设置了一个互斥信号量 Wmutex。 另外,再设置一个整型变量 Readcount 表示正在读的进程数目。由于只要有一个 Reader 进 程在读,便不允许 Writer 进程去写。因此,仅当 Readcount=0,表示尚无 Reader 进程在读 时,Reader 进程才需要执行 Wait(Wmutex)操作。若 Wait(Wmutex)操作成功,Reader 进程便 可去读,相应地,做 Readcount+1 操作。同理,仅当 Reader 进程在执行了 Readcount 减 1 操作后其值为0时,才须执行signal(Wmutex)操作,以便让Writer进程写。又因为Readcount 是一个可被多个 Reader 进程访问的临界资源,因此,也应该为它设置一个互斥信号量 rmutex。</p>
+<p>读者—写者问题可描述如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Var rmutex,wmutex: semaphore:=1,1;</span><br><span class="line">	Readcount: integer:=0; </span><br><span class="line">	begin</span><br><span class="line">		parbegin</span><br><span class="line">			Reader: begin </span><br><span class="line">						repeat</span><br><span class="line">							wait(rmutex);</span><br><span class="line">							if readcount=0 then wait(wmutex);</span><br><span class="line">								Readcount:=Readcount+1; </span><br><span class="line">							signal(rmutex);</span><br><span class="line">								...</span><br><span class="line">							perform read operation;</span><br><span class="line">								... </span><br><span class="line">							wait(rmutex);</span><br><span class="line">							readcount:=readcount-1;</span><br><span class="line">							if readcount=0 then signal(wmutex);</span><br><span class="line">							signal(rmutex);</span><br><span class="line">						until false; end</span><br><span class="line">			writer: begin</span><br><span class="line">						repeat</span><br><span class="line">							wait(wmutex);</span><br><span class="line">							perform write operation; </span><br><span class="line">							signal(wmutex);</span><br><span class="line">						until false; end</span><br><span class="line">		parend </span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+<h3 id="利用信号量集机制解决读者—写者问题"><a href="#利用信号量集机制解决读者—写者问题" class="headerlink" title="利用信号量集机制解决读者—写者问题"></a>利用信号量集机制解决读者—写者问题</h3><p>这里的读者—写者问题与前面的略有不同,它增加了一个限制,即最多只允许 RN 个读 者同时读。为此,又引入了一个信号量 L,并赋予其初值为 RN,通过执行 wait(L,1,1) 操作,来控制读者的数目。每当有一个读者进入时,就要先执行 wait(L,1,1)操作,使 L 的值减 1。当有 RN 个读者进入读后,L 便减为 0,第 RN+1 个读者要进入读时,必然会因 wait(L,1,1)操作失败而阻塞。对利用信号量集来解决读者—写者问题的描述如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Var RN integer;</span><br><span class="line">		L,mx: semaphore:=RN,1;</span><br><span class="line">	begin </span><br><span class="line">		parbegin</span><br><span class="line">			reader: begin </span><br><span class="line">						repeat</span><br><span class="line">							Swait(L,1,1); </span><br><span class="line">							Swait(mx,1,0);</span><br><span class="line">								...</span><br><span class="line">							perform read operation;</span><br><span class="line">								... </span><br><span class="line">							Ssignal(L,1);</span><br><span class="line">						until false; </span><br><span class="line">					end</span><br><span class="line">			writer: begin </span><br><span class="line">						repeat</span><br><span class="line">							Swait(mx,1,1;L,RN,0); </span><br><span class="line">							perform write operation; </span><br><span class="line">							Ssignal(mx,1);</span><br><span class="line">						until false; </span><br><span class="line">					end</span><br><span class="line">		parend end</span><br></pre></td></tr></table></figure>
+<p>其中,Swait(mx,1,0)语句起着开关的作用。只要无 writer 进程进入写,mx=1,reader 进 程就都可以进入读。但只要一旦有 writer 进程进入写时,其 mx=0,则任何 reader 进程就都无法进入读。Swait(mx,1,1;L,RN,0)语句表示仅当既无 writer 进程在写(mx=1),又无reader 进程在读(L=RN)时,writer 进程才能进入临界区写。</p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/12/进程同步/" itemprop="url">
+                  进程同步
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-12T19:02:01+08:00" content="2016-04-12">
+              2016-04-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index">
+                    <span itemprop="name">操作系统</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/12/进程同步/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/12/进程同步/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><strong> 本文摘自汤小丹主编《计算机操作系统》（第三版）2.3 进程同步 </strong></p>
+<blockquote>
+<p>在 OS 中引入进程后,虽然提高了资源的利用率和系统的吞吐量,但由于进程的异步性, 也会给系统造成混乱,尤其是在他们争用临界资源时。例如,当多个进程去争用一台打印 机时,有可能使多个进程的输出结果交织在一起,难于区分;而当多个进程去争用共享变 量、表格、链表时,有可能致使数据处理出错。进程同步的主要任务是对多个相关进程在 执行次序上进行协调,以使并发执行的诸进程之间能有效地共享资源和相互合作,从而使 程序的执行具有可再现性。</p>
+</blockquote>
+<hr>
+<h2 id="涉及概念"><a href="#涉及概念" class="headerlink" title="涉及概念"></a>涉及概念</h2><p>进程同步，临界资源，临界区，信号量，进程互斥，前趋关系，管程</p>
+<hr>
+<h2 id="进程同步的基本概念"><a href="#进程同步的基本概念" class="headerlink" title="进程同步的基本概念"></a>进程同步的基本概念</h2><h3 id="两种形式的制约关系"><a href="#两种形式的制约关系" class="headerlink" title="两种形式的制约关系"></a>两种形式的制约关系</h3><p>在多道程序环境下,当程序并发执行时,由于资源共享和进程合作,使同处于一个系 统中的诸进程之间可能存在着以下两种形式的制约关系。</p>
+<ol>
+<li>间接相互制约关系。同处于一个系统中的进程,通常都共享着某种系统资源,如共 享 CPU、共享 I/O 设备等。所谓间接相互制约即源于这种资源共享,例如,有两个进程 A 和 B,如果在 A 进程提出打印请求时,系统已将惟一的一台打印机分配给了进程 B,则此 时进程 A 只能阻塞;一旦进程 B 将打印机释放,则 A 进程才能由阻塞改为就绪状态。</li>
+<li>直接相互制约关系。这种制约主要源于进程间的合作。例如,有一输入进程 A 通过 单缓冲向进程 B 提供数据。当该缓冲空时,计算进程因不能获得所需数据而阻塞,而当进 程 A 把数据输入缓冲区后,便将进程 B 唤醒;反之,当缓冲区已满时,进程 A 因不能再向 缓冲区投放数据而阻塞,当进程 B 将缓冲区数据取走后便可唤醒 A。</li>
+</ol>
+<h3 id="临界资源"><a href="#临界资源" class="headerlink" title="临界资源"></a>临界资源</h3><p>在第一章中我们曾经介绍过,许多硬件资源如打印机、磁带机等,都属于临界资源 (Critical Resouce),诸进程间应采取互斥方式,实现对这种资源的共享。下面我们将通过一 个简单的例子来说明这一过程。</p>
+<p>生产者-消费者(producer-consumer)问题是一个著名的进程同步问题。它描述的是:有一 群生产者进程在生产产品,并将这些产品提供给消费者进程去消费。为使生产者进程与消 费者进程能并发执行,在两者之间设置了一个具有 n 个缓冲区的缓冲池,生产者进程将它 所生产的产品放入一个缓冲区中;消费者进程可从一个缓冲区中取走产品去消费。尽管所 有的生产者进程和消费者进程都是以异步方式运行的,但它们之间必须保持同步,即不允 许消费者进程到一个空缓冲区去取产品,也不允许生产者进程向一个已装满产品且尚未被 取走的缓冲区中投放产品。</p>
+<p>我们可利用一个数组来表示上述的具有 n 个(0,1,…,n-1)缓冲区的缓冲池。用输入 指针 in 来指示下一个可投放产品的缓冲区,每当生产者进程生产并投放一个产品后,输入 指针加 1;用一个输出指针 out 来指示下一个可从中获取产品的缓冲区,每当消费者进程取 走一个产品后,输出指针加 1。由于这里的缓冲池是组织成循环缓冲的,故应把输入指针加 1 表示成 in:= (in+1)mod n; 输出指针加 1 表示成 out:= (out+1) mod n。当 (in+1) mod n=out 时表示缓冲池满;而 in=out 则表示缓冲池空。此外,还引入了一个整型变量 counter,其初 始值为 0。每当生产者进程向缓冲池中投放一个产品后,使 counter 加 1;反之,每当消费 者进程从中取走一个产品时,使 counter 减 1。生产者和消费者两进程共享下面的变量:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Var n,integer;</span><br><span class="line">type item=...;</span><br><span class="line">var buffer: array[0,1,...,n-1] of item; in,out: 0,1,...,n-1;</span><br><span class="line">counter: 0,1,...,n;</span><br></pre></td></tr></table></figure>
+<p>指针 in 和 out 初始化为 1。在生产者和消费者进程的描述中,noop 是一条空操作指令, while condition do no-op 语句表示重复的测试条件(condication),重复测试应进行到该条件变 为 false(假),即到该条件不成立时为止。在生产者进程中使用一局部变量 nextp,用于暂时 存放每次刚生产出来的产品;而在消费者进程中,则使用一个局部变量 nextc,用于存放每 次要消费的产品。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">producer: </span><br><span class="line">	repeat</span><br><span class="line">		...</span><br><span class="line">		produce an item in nextp; </span><br><span class="line">		...</span><br><span class="line">		while counter=n do no-op; </span><br><span class="line">		buffer[in]:=nextp; </span><br><span class="line">		in:=in+1 mod n; </span><br><span class="line">		counter:=counter+1;</span><br><span class="line">	until false;</span><br><span class="line"></span><br><span class="line">consumer: </span><br><span class="line">	repeat</span><br><span class="line">		while counter=0 do no-op; </span><br><span class="line">		nextc:=buffer[out]; </span><br><span class="line">		out:=(out+1) mod n; </span><br><span class="line">		counter:=counter-1; </span><br><span class="line">		consumer the item in nextc;</span><br><span class="line">	until false;</span><br></pre></td></tr></table></figure>
+<p>虽然上面的生产者程序和消费者程序在分别看时都是正确的,而且两者在顺序执行时<br>其结果也会是正确的,但若并发执行时就会出现差错,问题就在于这两个进程共享变量 counter。生产者对它做加 1 操作,消费者对它做减 1 操作,这两个操作在用机器语言实现 时, 常可用下面的形式描述:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">register1:=counter; register2:=counter; </span><br><span class="line">register1:=register1+1; register2:=register2-1; </span><br><span class="line">counter:=register1; counter:=register2;</span><br></pre></td></tr></table></figure>
+<p>假设 counter 的当前值是 5。如果生产者进程先执行左列的三条机器语言语句,然后消 费者进程再执行右列的三条语句,则最后共享变量 counter 的值仍为 5; 反之,如果让消费 者进程先执行右列的三条语句,然后再让生产者进程执行左列的三条语句,则 counter 值也 还是 5,但是,如果按下述顺序执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">register1:=counter;			(register1=5) </span><br><span class="line">register1:=register1+1;   	(register1=6)</span><br><span class="line">register2:=counter;			(register2=5)</span><br><span class="line">register2:=register2-1; 	(register2=4)</span><br><span class="line">counter:=register1; 		(counter=6) </span><br><span class="line">counter:=register2;			(counter=4)</span><br></pre></td></tr></table></figure>
+<p>正确的 counter 值应当是 5,但现在是 4。读者可以自己试试,倘若再将两段程序中各语句 交叉执行的顺序改变,将可看到又可能得到 counter=6 的答案,这表明程序的执行已经失去 了再现性。为了预防产生这种错误,解决此问题的关键是应把变量 counter 作为临界资源处 理,亦即,令生产者进程和消费者进程互斥地访问变量 counter。</p>
+<h3 id="临界区"><a href="#临界区" class="headerlink" title="临界区"></a>临界区</h3><p>由前所述可知,不论是硬件临界资源,还是软件临界资源,多个进程必须互斥地对它进行访问。人们把在每个进程中访问临界资源的那段代码称为临界区(critical section)。显然, 若能保证诸进程互斥地进入自己的临界区,便可实现诸进程对临界资源的互斥访问。为此, 每个进程在进入临界区之前,应先对欲访问的临界资源进行检查,看它是否正被访问。如 果此刻该临界资源未被访问,进程便可进入临界区对该资源进行访问,并设置它正被访问 的标志;如果此刻该临界资源正被某进程访问,则本进程不能进入临界区。因此,必须在 临界区前面增加一段用于进行上述检查的代码,把这段代码称为进入区(entry section)。相应 地,在临界区后面也要加上一段称为退出区(exit section)的代码,用于将临界区正被访问的 标志恢复为未被访问的标志。进程中除上述进入区、临界区及退出区之外的其它部分的代 码,在这里都称为剩余区。这样,可把一个访问临界资源的循环进程描述如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">repeat</span><br><span class="line">	|entry section|</span><br><span class="line">	critical section;</span><br><span class="line">	|exit section|</span><br><span class="line">	remainder section;</span><br><span class="line">until false;</span><br></pre></td></tr></table></figure></p>
+<h3 id="同步机制应遵循的规则"><a href="#同步机制应遵循的规则" class="headerlink" title="同步机制应遵循的规则"></a>同步机制应遵循的规则</h3><p>为实现进程互斥地进入自已的临界区,可用软件方法,更多的是在系统中设置专门的 同步机构来协调各进程间的运行。所有同步机制都应遵循下述四条准则:</p>
+<ol>
+<li>空闲让进。当无进程处于临界区时,表明临界资源处于空闲状态,应允许一个请求 进入临界区的进程立即进入自己的临界区,以有效地利用临界资源。</li>
+<li>忙则等待。当已有进程进入临界区时,表明临界资源正在被访问,因而其它试图进 入临界区的进程必须等待,以保证对临界资源的互斥访问。</li>
+<li>有限等待。对要求访问临界资源的进程,应保证在有限时间内能进入自己的临界区, 以免陷入“死等”状态。</li>
+<li>让权等待。当进程不能进入自己的临界区时,应立即释放处理机,以免进程陷入“忙 等”状态。</li>
+</ol>
+<hr>
+<h2 id="信号量机制"><a href="#信号量机制" class="headerlink" title="信号量机制"></a>信号量机制</h2><blockquote>
+<p>1965 年,荷兰学者 Dijkstra 提出的信号量(Semaphores)机制是一种卓有成效的进程同步 工具。在长期且广泛的应用中,信号量机制又得到了很大的发展,它从整型信号量经记录 型信号量,进而发展为“信号量集”机制。现在,信号量机制已被广泛地应用于单处理机 和多处理机系统以及计算机网络中。</p>
+</blockquote>
+<h3 id="整型信号量"><a href="#整型信号量" class="headerlink" title="整型信号量"></a>整型信号量</h3><p>最初由 Dijkstra 把整型信号量定义为一个用于表示资源数目的整型量 S,它与一般整型 量不同,除初始化外,仅能通过两个标准的原子操作(Atomic Operation) wait(S)和signal(S) 来访问。很长时间以来,这两个操作一直被分别称为 P、V 操作。Wait(S)和 signal(S)操作可 描述为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wait(S):	while S&lt;=0 do no-op;</span><br><span class="line">				  S:=S-1; 				  </span><br><span class="line">signal(S): 		  S:=S+1;</span><br></pre></td></tr></table></figure>
+<p>wait(S)和 signal(S)是两个原子操作,因此,它们在执行时是不可中断的。亦即,当一个 进程在修改某信号量时,没有其他进程可同时对该信号量进行修改。此外,在 wait 操作中, 对 S 值的测试和做 S:=S-1 操作时都不可中断。</p>
+<h3 id="记录型信号量"><a href="#记录型信号量" class="headerlink" title="记录型信号量"></a>记录型信号量</h3><p>在整型信号量机制中的 wait 操作,只要是信号量 S≤0,就会不断地测试。因此,该机 制并未遵循“让权等待”的准则,而是使进程处于“忙等”的状态。记录型信号量机制则 是一种不存在“忙等”现象的进程同步机制。但在采取了“让权等待”的策略后,又会出 现多个进程等待访问同一临界资源的情况。为此,在信号量机制中,除了需要一个用于代 表资源数目的整型变量 value 外,还应增加一个进程链表指针 L,用于链接上述的所有等待 进程。记录型信号量是由于它采用了记录型的数据结构而得名的。它所包含的上述两个数 据项可描述为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type semaphore=record</span><br><span class="line">			   value: integer;</span><br><span class="line">			   L: list of process;</span><br><span class="line">			   end</span><br></pre></td></tr></table></figure>
+<p>相应地,wait(S)和 signal(S)操作可描述为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">procedure wait(S)</span><br><span class="line">	var S:semaphore;</span><br><span class="line">	begin</span><br><span class="line">		S.value:=S.value-1;</span><br><span class="line">		if S.value&lt;0 then block(S.L);</span><br><span class="line">	end </span><br><span class="line"></span><br><span class="line">procedure signal(S)</span><br><span class="line">	var S: semaphore; </span><br><span class="line">	begin</span><br><span class="line">		S.value:=S.value+1;</span><br><span class="line">		if S.value&lt;=0 then wakeup(S.L); </span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+<p>在记录型信号量机制中,S.value 的初值表示系统中某类资源的数目,因而又称为资源 信号量。对它的每次 wait 操作,意味着进程请求一个单位的该类资源,使系统中可供分配 的该类资源数减少一个,因此描述为 S.value:=S.value-1;当 S.value&lt;0 时,表示该类资源已 分配完毕,因此进程应调用 block 原语,进行自我阻塞,放弃处理机,并插入到信号量链表 S.L 中。可见,该机制遵循了“让权等待”准则。此时 S.value 的绝对值表示在该信号量链 表中已阻塞进程的数目。对信号量的每次 signal 操作,表示执行进程释放一个单位资源,使 系统中可供分配的该类资源数增加一个,故 S.value:=S.value+1 操作表示资源数目加 1。若 加 1 后仍是 S.value≤0,则表示在该信号量链表中,仍有等待该资源的进程被阻塞,故还应 调用 wakeup 原语,将 S.L 链表中的第一个等待进程唤醒。如果 S.value 的初值为 1,表示只允许一个进程访问临界资源,此时的信号量转化为互斥信号量,用于进程互斥。</p>
+<h3 id="AND-型信号量"><a href="#AND-型信号量" class="headerlink" title="AND 型信号量"></a>AND 型信号量</h3><p>上述的进程互斥问题,是针对各进程之间只共享一个临界资源而言的。在有些应用场 合,是一个进程需要先获得两个或更多的共享资源后方能执行其任务。假定现有两个进程 A 和 B,他们都要求访问共享数据 D 和 E。当然,共享数据都应作为临界资源。为此,可为 这两个数据分别设置用于互斥的信号量 Dmutex 和 Emutex,并令它们的初值都是 1。相应地, 在两个进程中都要包含两个对 Dmutex 和 Emutex 的操作,即</p>
+<table>
+<thead>
+<tr>
+<th>process A:</th>
+<th>process B: </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>wait(Dmutex);</td>
+<td>wait(Emutex);</td>
+</tr>
+<tr>
+<td>wait(Emutex);</td>
+<td>wait(Dmutex);</td>
+</tr>
+</tbody>
+</table>
+<p>若进程 A 和 B 按下述次序交替执行 wait 操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">process A: wait(Dmutex); 	于是 Dmutex=0</span><br><span class="line"></span><br><span class="line">process B: wait(Emutex); 	于是 Emutex=0</span><br><span class="line"></span><br><span class="line">process A: wait(Emutex); 	于是 Emutex=-1 A 阻塞 </span><br><span class="line"></span><br><span class="line">process B: wait(Dmutex); 	于是 Dmutex=-1 B 阻塞</span><br></pre></td></tr></table></figure>
+<p>最后,进程 A 和 B 处于僵持状态。在无外力作用下,两者都将无法从僵持状态中解脱 出来。我们称此时的进程 A 和 B 已进入死锁状态。显然,当进程同时要求的共享资源愈多 时,发生进程死锁的可能性也就愈大。</p>
+<p>AND 同步机制的基本思想是:将进程在整个运行过程中需要的所有资源,一次性全部 地分配给进程,待进程使用完后再一起释放。只要尚有一个资源未能分配给进程,其它所 有可能为之分配的资源也不分配给它。亦即,对若干个临界资源的分配,采取原子操作方 式:要么把它所请求的资源全部分配到进程,要么一个也不分配。由死锁理论可知,这样 就可避免上述死锁情况的发生。为此,在 wait 操作中,增加了一个“AND”条件,故称为 AND 同步,或称为同时 wait 操作,即 Swait(Simultaneous wait)定义如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Swait(S1,S2,...,Sn)</span><br><span class="line">	if Si&gt;=1 and ... and Sn&gt;=1 then</span><br><span class="line">		for i:=1 to n do </span><br><span class="line">		Si:=Si-1; </span><br><span class="line">		endfor</span><br><span class="line">	else</span><br><span class="line">	place the process in the waiting queue associated with the first Si found with Si&lt;1,and set the program count of this process to the beginning of Swait operation</span><br><span class="line">	endif</span><br><span class="line"></span><br><span class="line">Ssignal(S1,S2,...,Sn) </span><br><span class="line">for i:=1 to n do</span><br><span class="line">	Si:=Si+1;</span><br><span class="line">Remove all the process waiting in the queue associated with Si into the ready queue.</span><br><span class="line">endfor;</span><br></pre></td></tr></table></figure>
+<h3 id="信号量集"><a href="#信号量集" class="headerlink" title="信号量集"></a>信号量集</h3><p>在记录型信号量机制中,wait(S)或 signal(S)操作仅能对信号量施以加 1 或减 1 操作,意 味着每次只能获得或释放一个单位的临界资源。而当一次需要 N 个某类临界资源时,便要 进行 N 次 wait(S)操作,显然这是低效的。此外,在有些情况下,当资源数量低于某一下限 值时,便不予以分配。因而,在每次分配之前,都必须测试该资源的数量,看其是否大于 其下限值。基于上述两点,可以对 AND 信号量机制加以扩充,形成一般化的“信号量集” 机制。Swait 操作可描述如下,其中 S 为信号量,d 为需求值,而 t 为下限值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Swait(S1,t1,d1,...,Sn,tn,dn) </span><br><span class="line">	if Si&gt;=t1 and ... and Sn&gt;=tn then</span><br><span class="line">		for i:=1 to n do </span><br><span class="line">			Si:=Si-di;</span><br><span class="line">	endfor </span><br><span class="line">else</span><br><span class="line">Place the executing process in the waiting queue of the first Si with Si&lt;ti and set its program counter to the beginning of the Swait Operation.</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Ssignal(S1,d1,...,Sn,dn) </span><br><span class="line">	for i:=1 to n do</span><br><span class="line">		Si:=Si+di;</span><br><span class="line">Remove all the process waiting in the queue associated with Si into the ready queue </span><br><span class="line">endfor;</span><br></pre></td></tr></table></figure>
+<p>下面我们讨论一般“信号量集”的几种特殊情况:</p>
+<ol>
+<li>Swait(S,d,d)。此时在信号量集中只有一个信号量 S,但允许它每次申请 d 个资 源,当现有资源数少于 d 时,不予分配。</li>
+<li>Swait(S,1,1)。此时的信号量集已蜕化为一般的记录型信号量(S&gt;1时)或互斥信号 量(S=1 时)。</li>
+<li>Swait(S,1,0)。这是一种很特殊且很有用的信号量操作。当S≥1时,允许多个进 程进入某特定区;当 S 变为 0 后,将阻止任何进程进入特定区。换言之,它相当于一个可 控开关。</li>
+</ol>
+<hr>
+<h2 id="信号量的应用"><a href="#信号量的应用" class="headerlink" title="信号量的应用"></a>信号量的应用</h2><h3 id="利用信号量实现进程互斥"><a href="#利用信号量实现进程互斥" class="headerlink" title="利用信号量实现进程互斥"></a>利用信号量实现进程互斥</h3><p>为使多个进程能互斥地访问某临界资源,只须为该资源设置一互斥信号量 mutex,并设 其初始值为 1,然后将各进程访问该资源的临界区 CS 置于 wait(mutex)和 signal(mutex)操作 之间即可。这样,每个欲访问该临界资源的进程在进入临界区之前,都要先对 mutex 执行 wait 操作,若该资源此刻未被访问,本次 wait 操作必然成功,进程便可进入自己的临界区, 这时若再有其他进程也欲进入自己的临界区,此时由于对 mutex 执行 wait 操作定会失败,因而该进程阻塞,从而保证了该临界资源能被互斥地访问。当访问临界资源的进程退出临 界区后,又应对 mutex 执行 signal 操作,以便释放该临界资源。利用信号量实现进程互斥的 进程可描述如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Var mutex: semaphore:=1; </span><br><span class="line">	begin</span><br><span class="line">	parbegin</span><br><span class="line">		process 1: begin</span><br><span class="line">						repeat </span><br><span class="line">							wait(mutex); </span><br><span class="line">							critical section </span><br><span class="line">							signal(mutex); </span><br><span class="line">							remainder seetion</span><br><span class="line">						until false; </span><br><span class="line">					end</span><br><span class="line">					</span><br><span class="line">		process 2: begin </span><br><span class="line">						repeat</span><br><span class="line">							wait(mutex); </span><br><span class="line">							ritical section </span><br><span class="line">							signal(mutex); </span><br><span class="line">							remainder section</span><br><span class="line">						until false; </span><br><span class="line">					end</span><br><span class="line">	parend</span><br></pre></td></tr></table></figure>
+<p>在利用信号量机制实现进程互斥时应注意,wait(mutex)和 signal(mutex)必须成对地出现。缺少 wait(mutex)将会导致系统混乱,不能保证对临界资源的互斥访问;而缺少 signal(mutex) 将会使临界资源永远不被释放,从而使因等待该资源而阻塞的进程不能被唤醒。</p>
+<h3 id="利用信号量实现前趋关系"><a href="#利用信号量实现前趋关系" class="headerlink" title="利用信号量实现前趋关系"></a>利用信号量实现前趋关系</h3><p>还可利用信号量来描述程序或语句之间的前趋关系。设有两个并发执行的进程 P1 和 P2。 P1 中有语句 S1;P2 中有语句 S2。我们希望在 S1 执行后再执行 S2。为实现这种前趋关系, 我们只须使进程 P1 和 P2 共享一个公用信号量 S,并赋予其初值为 0,将 signal(S)操作放在 语句 S1 后面;而在 S2 语句前面插入 wait(S)操作,即</p>
+<ul>
+<li><p>在进程 P1 中,用 S1;signal(S);</p>
+</li>
+<li><p>在进程 P2 中,用 wait(S);S2;</p>
+</li>
+<li><p>由于 S 被初始化为 0,这样,若 P2 先执行必定阻塞,只有在进程 P1 执行完 S1;signal(S);操作后使 S 增为 1 时, P2 进程方能执行语句 S2 成功。同样,我们可以利用信号 量,按照语句间的前趋关系(见图),写出一个更为复 杂的可并发执行的程序。<br><img src="http://upload-images.jianshu.io/upload_images/656630-33723c9b511ef3d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="前趋关系图" title="前趋关系图"></p>
+</li>
+</ul>
+<p>图示是一个前趋图,其中 S1,S2,S3,…,S6 是最简单的程序段(只有一条语句)。 为使各程序段能正确执行,应设置若干个初始值为“0”的信号量。如为保证 S1→S2,S1→S3 的前趋关系,应分别设置信号量 a 和 b,同样,为了保证 S2→S4,S2→S5,S3→S6,S4→S6 和 S5→S6,应设置信号量 c,d,e,f,g。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Var a,b,c,d,e,f,g:semaphore: =0,0,0,0,0,0,0; </span><br><span class="line">	begin</span><br><span class="line">		parbegin</span><br><span class="line">			begin S1; signal(a); signal(b); end;</span><br><span class="line">			begin wait(a); S2; signal(c); signal(d); end; </span><br><span class="line">			begin wait(b); S3; signal(e); end;</span><br><span class="line">			begin wait(c); S4; signal(f); end;</span><br><span class="line">			begin wait(d); S5; signal(g); end;</span><br><span class="line">			begin wait(e); wait(f); wait(g); S6; end;</span><br><span class="line">		parend </span><br><span class="line">	end</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="管程机制"><a href="#管程机制" class="headerlink" title="管程机制"></a>管程机制</h2><blockquote>
+<p>虽然信号量机制是一种既方便、又有效的进程同步机制,但每个要访问临界资源的进 程都必须自备同步操作 wait(S)和 signal(S)。这就使大量的同步操作分散在各个进程中。这 不仅给系统的管理带来了麻烦,而且还会因同步操作的使用不当而导致系统死锁。这样, 在解决上述问题的过程中,便产生了一种新的进程同步工具——管程(Monitors)。</p>
+</blockquote>
+<h3 id="管程的定义"><a href="#管程的定义" class="headerlink" title="管程的定义"></a>管程的定义</h3><p>系统中的各种硬件资源和软件资源,均可用数据结构抽象地描述其资源特性,即用少 量信息和对该资源所执行的操作来表征该资源,而忽略了它们的内部结构和实现细节。例 如,对一台电传机,可用与分配该资源有关的状态信息(busy 或 free)和对它执行请求与释放 的操作,以及等待该资源的进程队列来描述。又如,一个 FIFO 队列,可用其队长、队首和 队尾以及在该队列上执行的一组操作来描述。</p>
+<p>利用共享数据结构抽象地表示系统中的共享资源,而把对该共享数据结构实施的操作 定义为一组过程,如资源的请求和释放过程 request 和 release。进程对共享资源的申请、释 放和其它操作,都是通过这组过程对共享数据结构的操作来实现的,这组过程还可以根据 资源的情况,或接受或阻塞进程的访问,确保每次仅有一个进程使用共享资源,这样就可 以统一管理对共享资源的所有访问,实现进程互斥。</p>
+<p>代表共享资源的数据结构,以及由对该共享数据结构实施操作的一组过程所组成的资源 管理程序,共同构成了一个操作系统的资源管理模块,我们称之为管程。管程被请求和释放 资源的进程所调用。Hansan 为管程所下的定义是:“一个管程定义了一个数据结构和能为并 发进程所执行(在该数据结构上)的一组操作,这组操作能同步进程和改变管程中的数据”。</p>
+<p>由上述的定义可知,管程由四部分组成:1 管程的名称;2 局部于管程内部的共享 数据结构说明;3 对该数据结构进行操作的一组过程;4 对局部于管程内部的共享数据 设置初始值的语句。图是一个管程的示意图。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/656630-e11c381f42af5177.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="管程示意图" title="管程示意图"></p>
+<p>管程的语法描述如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">	type monitor_name = MONITOR;</span><br><span class="line">&lt;共享变量说明&gt;;</span><br><span class="line">define &lt;(能被其他模块引用的)过程名列表&gt;; </span><br><span class="line">use &lt;(要调用的本模块外定义的)过程名列表&gt;; </span><br><span class="line">procedure &lt;过程名&gt;(&lt;形式参数表&gt;);</span><br><span class="line">	begin</span><br><span class="line">		M</span><br><span class="line">	end;</span><br><span class="line">		M</span><br><span class="line">function &lt;函数名&gt;(&lt;形式参数表&gt;):值类型; </span><br><span class="line">	begin</span><br><span class="line">		M</span><br><span class="line">	end; </span><br><span class="line">		M</span><br><span class="line">begin </span><br><span class="line">	&lt;管程的局部数据初始化语句序列&gt;;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>需要指出的是,局部于管程内部的数据结构,仅能被局部于管程内部的过程所访问, 任何管程外的过程都不能访问它;反之,局部于管程内部的过程也仅能访问管程内的数据 结构。由此可见,管程相当于围墙,它把共享变量和对它进行操作的若干过程围了起来, 所有进程要访问临界资源时,都必须经过管程(相当于通过围墙的门)才能进入,而管程每次 只准许一个进程进入管程,从而实现了进程互斥。</p>
+<p>管程是一种程序设计语言结构成分,它和信号量有同等的表达能力,从语言的角度看, 管程主要有以下特性:</p>
+<ol>
+<li>模块化。管程是一个基本程序单位,可以单独编译。</li>
+<li>抽象数据类型。管程中不仅有数据,而且有对数据的操作。</li>
+<li>信息掩蔽。管程中的数据结构只能被管程中的过程访问,这些过程也是在管程内部 定义的,供管程外的进程调用,而管程中的数据结构以及过程(函数)的具体实现外部不可见。</li>
+</ol>
+<p>管程和进程不同,主要体现在以下几个方面:</p>
+<ol>
+<li>虽然二者都定义了数据结构,但进程定义的是私有数据结构 PCB,管程定义的是公 共数据结构,如消息队列等;</li>
+<li>二者都存在对各自数据结构上的操作,但进程是由顺序程序执行有关的操作,而管 程主要是进行同步操作和初始化操作;</li>
+<li>设置进程的目的在于实现系统的并发性,而管程的设置则是解决共享资源的互斥使 用问题;</li>
+<li>进程通过调用管程中的过程对共享数据结构实行操作,该过程就如通常的子程序一 样被调用,因而管程为被动工作方式,进程则为主动工作方式;</li>
+<li>进程之间能并发执行,而管程则不能与其调用者并发;</li>
+<li>进程具有动态性,由“创建”而诞生,由“撤销”而消亡,而管程则是操作系统中 的一个资源管理模块,供进程调用。</li>
+</ol>
+<h3 id="条件变量"><a href="#条件变量" class="headerlink" title="条件变量"></a>条件变量</h3><p>在利用管程实现进程同步时,必须设置同步工具,如两个同步操作原语 wait 和 signal。 当某进程通过管程请求获得临界资源而未能满足时,管程便调用 wait 原语使该进程等待, 并将其排在等待队列上,如管程示意图所示。仅当另一进程访问完成并释放该资源之后,管程 才又调用 signal 原语,唤醒等待队列中的队首进程。</p>
+<p>但是仅仅有上述的同步工具是不够的。考虑一种情况:当一个进程调用了管程,在管 程中时被阻塞或挂起,直到阻塞或挂起的原因解除,而在此期间,如果该进程不释放管程, 则其它进程无法进入管程,被迫长时间地等待。为了解决这个问题,引入了条件变量 condition。通常,一个进程被阻塞或挂起的条件(原因)可有多个,因此在管程中设置了多个 条件变量,对这些条件变量的访问,只能在管程中进行。</p>
+<p>管程中对每个条件变量都须予以说明,其形式为:Var x,y:condition。对条件变量的 操作仅仅是 wait 和 signal,因此条件变量也是一种抽象数据类型,每个条件变量保存了一个 链表,用于记录因该条件变量而阻塞的所有进程,同时提供的两个操作即可表示为 x.wait 和 x.signal,其含义为:</p>
+<ol>
+<li>x.wait:正在调用管程的进程因x条件需要被阻塞或挂起,则调用x.wait将自己插 入到 x 条件的等待队列上,并释放管程,直到 x 条件变化。此时其它进程可以使用该管程。</li>
+<li>x.signal:正在调用管程的进程发现x条件发生了变化,则调用x.signal,重新启动 一个因 x 条件而阻塞或挂起的进程。如果存在多个这样的进程,则选择其中的一个,如果 没有,则继续执行原进程,而不产生任何结果。这与信号量机制中的 signal 操作不同,因为 后者总是要执行 s:=s+1 操作,因而总会改变信号量的状态。</li>
+</ol>
+<p>如果有进程 Q 因 x 条件处于阻塞状态,当正在调用管程的进程 P 执行了 x.signal 操作后, 进程 Q 被重新启动,此时两个进程 P 和 Q,如何确定哪个执行,哪个等待,可采用下述两 种方式之一进行处理:</p>
+<ol>
+<li>P等待,直至Q离开管程或等待另一条件。</li>
+<li>Q等待,直至P离开管程或等待另一条件。 </li>
+</ol>
+<p>采用哪种处理方式,当然是各执一词。Hoare 采用了第一种处理方式,而 Hansan 选择了两者的折衷,他规定管程中的过程所执行的 signal 操作是过程体的最后一个操作,于是, 进程 P 执行 signal 操作后立即退出管程,因而进程 Q 马上被恢复执行。</p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/08/10/数据库设计（三）数据库系统结构/" itemprop="url">
+                  数据库设计（三）数据库系统结构
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-08-10T10:35:08+08:00" content="2015-08-10">
+              2015-08-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/10/数据库设计（三）数据库系统结构/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/10/数据库设计（三）数据库系统结构/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><p>三级模式，两级映象</p>
+<h2 id="What"><a href="#What" class="headerlink" title="What"></a>What</h2><h3 id="模式"><a href="#模式" class="headerlink" title="模式"></a>模式</h3><blockquote>
+<ul>
+<li>引入<br>在数据模型中有型(Type)和值(Value)的概念。型就是某一类数据结构和属性的说明，值就是具体的赋值。</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>模式<br>模式(Schema)是数据库中全体数据的逻辑结构和特征描述，是数据库的型。</p>
+</li>
+<li><p>实例<br>模式的一个具体值称为模式的一个实例(Instance)，同一个模式可以有多个实例。</p>
+</li>
+<li><p>模式与实例的关系<br>模式是相对稳定的，而实例是不断变化的；模式反映的是数据的结构及其联系，而实例反映的是数据库某一刻的状态。</p>
+</li>
+</ul>
+<h3 id="三级模式结构"><a href="#三级模式结构" class="headerlink" title="三级模式结构"></a>三级模式结构</h3><blockquote>
+<ul>
+<li>数据库系统由外模式、模式、内模式三级构成。</li>
+<li>数据库系统的三级模式是对数据的三个抽象级别，三级模式把数据的具体组织交给DBMS管理，使用户不必关心数据在计算机当中如何表示，如何存储，用户可专注于数据的逻辑抽象。</li>
+</ul>
+</blockquote>
+<h4 id="1-外模式"><a href="#1-外模式" class="headerlink" title="1. 外模式"></a>1. 外模式</h4><p>外模式（亦称子模式或者用户模式），是数据库用户能够看到和使用的局部数据的逻辑结构和特征的描述。外模式保证了数据库的安全性，每个用户只能看到和访问对应外模式中的数据，数据库的其他数据对该用户均不可见。</p>
+<p>一般地，</p>
+<blockquote>
+<ul>
+<li>外模式是模式的的子集，一个数据库可以有多个外模式。</li>
+<li>对模式中的同一数据，在外模式中也可以不同。</li>
+<li>一个外模式可以被多个应用程序所使用，一个应用程序只能使用一个外模式。</li>
+</ul>
+</blockquote>
+<p>DBMS提供子模式描述语言（子模式DDL）来严格定义子模式。</p>
+<h4 id="2-模式"><a href="#2-模式" class="headerlink" title="2. 模式"></a>2. 模式</h4><p>模式（亦称逻辑模式）是数据库全体数据的逻辑结构和特征描述，是所用用户的公共数据视图。是数据库系统结构的中间层，既不涉及数据的物理存储细节，也不涉及具体的应用程序、开发工具和语言。</p>
+<p>模式是数据库在逻辑级的视图，一个数据库<strong>只有一个模式</strong>，定义模式时要考虑数据的逻辑结构和数据间的联系，定义数据的安全性和完整性。</p>
+<p>DBMS提供模式描述语言（模式DDL）来严格定义模式。</p>
+<h4 id="3-内模式"><a href="#3-内模式" class="headerlink" title="3. 内模式"></a>3. 内模式</h4><p>一个数据库只有一个内模式（亦称存储模式），内模式是数据物理结构和存储方式的描述，是数据库中数据的内部表示方式。</p>
+<p>DBMS提供内模式描述语言（内模式DDL）来严格定义内模式。</p>
+<h3 id="两级映象"><a href="#两级映象" class="headerlink" title="两级映象"></a>两级映象</h3><p>为了能够在系统内部实现数据在3个抽象层次的联系和转换DBMS在三级模式之间提供两级映像功能：</p>
+<blockquote>
+<ul>
+<li>外模式/模式映像</li>
+<li>模式/内模式映像</li>
+</ul>
+</blockquote>
+<p>其中外模式/模式映像保证了数据和程序之间的<strong>逻辑独立性</strong>；模式/内模式映像保证了数据和程序之间的<strong>物理独立性</strong>。</p>
+<h4 id="1-外模式-模式映像"><a href="#1-外模式-模式映像" class="headerlink" title="1. 外模式/模式映像"></a>1. 外模式/模式映像</h4><p>模式描述数据的全局逻辑结构，外模式描述数据的局部逻辑结构。同一个模式可以有多个外模式，每一个外模式在数据库系统中都有一个对应外模式/模式映像，它定义了外外模式与模式之间的对应关系。映像的定义通常包含在各自外模式的描述中。</p>
+<p>当模式改变时，DBA可以对各个外模式/模式映像做相应的改变，从而使外模式保持不变，应用程序是依赖于外模式编写的，所以应用程序可以不修改。所以说外模式/模式映像保证了数据和程序之间的逻辑独立性。</p>
+<h4 id="2-模式-内模式映像"><a href="#2-模式-内模式映像" class="headerlink" title="2. 模式/内模式映像"></a>2. 模式/内模式映像</h4><p>数据库模式和内模式都只有一个，因此模式/内模式映像也是唯一的，模式/内模式映像定义了数据全局逻辑结构与存储结构的对应关系。当数据库的存储方式发生变化时，由DBA对模式/内模式映像做相应的改变，可使模式保持不变，进而使外模式也保持不变，最后可达到应用程序不变的目的。所以说模式/内模式映像保证了数据和程序之间的物理独立性。</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>在数据库的三级模式中，<strong>模式</strong>是全局的逻辑结构，它作为中间层独立于其它两层，在设计数据库模式结构时要首先确定数据库的逻辑结构。</p>
+<p>数据库的<strong>内模式</strong>依赖于它的模式（全局逻辑结构），独立于外模式，也独立于具体的存储设备。它将模式定义的数据结构和联系按照一定的存储策略进行组织，从而达到较好的时间和空间效率。</p>
+<p>数据库的<strong>外模式</strong>面向具体的应用程序，它定义在模式之上，因此可以独立于存储模式和存储设备。</p>
+<p>数据库的<strong>二级映像</strong>保证了数据库外模式的稳定性，进而保证了依赖于特定外模式的应用程序的稳定性。一般情况下，只要应用程序的需求不变，应用程序就可以不用修改。</p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/08/09/数据库设计（二）数据模型/" itemprop="url">
+                  数据库设计（二）数据模型
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-08-09T21:15:47+08:00" content="2015-08-09">
+              2015-08-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/09/数据库设计（二）数据模型/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/09/数据库设计（二）数据模型/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="0-关键词"><a href="#0-关键词" class="headerlink" title="0. 关键词"></a>0. 关键词</h2><p>数据模型，概念模型，逻辑模型，实体，属性，E-R图</p>
+<h2 id="1-What-数据模型是什么"><a href="#1-What-数据模型是什么" class="headerlink" title="1. What 数据模型是什么"></a>1. What 数据模型是什么</h2><blockquote>
+<p><strong>数据模型</strong>是对现实世界数据特征的抽象，是对现实世界的模拟。</p>
+</blockquote>
+<p>数据模型要满足三方面的要求：</p>
+<ol>
+<li>能够真实的模拟现实世界</li>
+<li>要便于人的理解</li>
+<li>要便于在计算机上实现</li>
+</ol>
+<h3 id="1-2-数据模型的分类"><a href="#1-2-数据模型的分类" class="headerlink" title="1.2 数据模型的分类"></a>1.2 数据模型的分类</h3><ol>
+<li>概念模型</li>
+<li>逻辑模型</li>
+<li>物理模型（不讨论）</li>
+</ol>
+<h4 id="1-2-1-概念模型"><a href="#1-2-1-概念模型" class="headerlink" title="1.2.1 概念模型"></a>1.2.1 概念模型</h4><blockquote>
+<p><strong>概念模型</strong>是站在用户的角度对数据进行建模，主要用于数据库设计。</p>
+</blockquote>
+<h5 id="1-实体（Entity）"><a href="#1-实体（Entity）" class="headerlink" title="1) 实体（Entity）"></a>1) 实体（Entity）</h5><p>客观存在并相互区别的事物称为实体，实体可以是具体的事物也可以是抽象的概念或联系。</p>
+<h5 id="2-属性（Attribute）"><a href="#2-属性（Attribute）" class="headerlink" title="2) 属性（Attribute）"></a>2) 属性（Attribute）</h5><p>实体具有的某一特性被称为属性，一个实体可以拥有多个属性。</p>
+<h5 id="3-码（Key）"><a href="#3-码（Key）" class="headerlink" title="3) 码（Key）"></a>3) 码（Key）</h5><p>可以唯一标识实体的属性称为码（键）。例如学生的学号，公民的身份证号。</p>
+<h5 id="4-域（Domain）"><a href="#4-域（Domain）" class="headerlink" title="4) 域（Domain）"></a>4) 域（Domain）</h5><p>属性的取值范围称为该属性的域。</p>
+<h5 id="5-实体型（Entity-Type）"><a href="#5-实体型（Entity-Type）" class="headerlink" title="5) 实体型（Entity Type）"></a>5) 实体型（Entity Type）</h5><p>实体型就是用实体名及其属性名的集合来抽象的同类实体。如 学生(学号，姓名， 性别，出生日期)。<br>实体型之间的联系可划分为三种：</p>
+<ol>
+<li>一对一联系(1:1)</li>
+<li>一对多联系(1:n)</li>
+<li>多对多联系(m:n)</li>
+</ol>
+<h5 id="6-实体集（Entity-Set）"><a href="#6-实体集（Entity-Set）" class="headerlink" title="6) 实体集（Entity Set）"></a>6) 实体集（Entity Set）</h5><p>同一类型的集合称为实体集。如全体学生。</p>
+<h5 id="7-联系（Relationship）"><a href="#7-联系（Relationship）" class="headerlink" title="7) 联系（Relationship）"></a>7) 联系（Relationship）</h5><p>实体内部和实体间都存在联系，实体内部的联系通常是指实体的各个属性之间的联系，实体间的联系通知指不同实体集之间的联系。</p>
+<h4 id="1-2-2-逻辑模型"><a href="#1-2-2-逻辑模型" class="headerlink" title="1.2.2 逻辑模型"></a>1.2.2 逻辑模型</h4><blockquote>
+<p><strong>逻辑模型</strong>是站在计算机的角度对数据进行建模，主要用于DBMS的实现。</p>
+</blockquote>
+<h3 id="1-3-数据模型的组成"><a href="#1-3-数据模型的组成" class="headerlink" title="1.3 数据模型的组成"></a>1.3 数据模型的组成</h3><p>数据模型一般由一下三部分组成：</p>
+<ol>
+<li>数据结构（描述系统的静态特性）</li>
+<li>数据操作（描述系统的动态特性）</li>
+<li>完整性约束（描述系统的完整性约束）</li>
+</ol>
+<h2 id="2-Why-为什么需要数据模型"><a href="#2-Why-为什么需要数据模型" class="headerlink" title="2. Why 为什么需要数据模型"></a>2. Why 为什么需要数据模型</h2><p>数据模型是数据库系统的核心和基础，各类DBMS软件都是基于某种数据模型的。为了把现实世界的事物抽象组织成某一DBMS支持的数据模型，我们常常将需要将现实世界的客观事物先抽象成一种信息结构，这种信息结构不依赖与具体的计算机系统，也不是DBMS支持的数据模型，而是一种概念模型；然后再将数据模型转化为某一DBMS支持的数据模型（逻辑模型）。</p>
+<h2 id="3-How-如何表示概念模型"><a href="#3-How-如何表示概念模型" class="headerlink" title="3. How 如何表示概念模型"></a>3. How 如何表示概念模型</h2><blockquote>
+<p><strong>实体—联系(E-R)</strong>图法是一种常用的表示概念模型的方法。</p>
+</blockquote>
+<p>E-R图提供了表示实体型、属性和联系的方法。</p>
+<ul>
+<li>实体型：用矩形表示实体型，矩形内部写明实体名。</li>
+<li>属性：属性用椭圆表示，并用直线与它的实体型相连接。<br>学生(学号，姓名，性别，出生日期)的E-R图表示如下图。<br><img src="http://upload-images.jianshu.io/upload_images/656630-1ec7c554c728da9a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="学生实体和属性E-R图"></li>
+<li>联系：联系用菱形表示，菱形内写联系名，用直线于相关的实体型相连接，并在直线旁标清联系类型(1:1, 1:n, m:n)。<br>如图表示的是学生选课的实体联系及属性。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/656630-524b1cd0dc4cda10.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="联系及属性E-R图"></p>
+
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2015/07/15/数据库设计（一）数据库概述/" itemprop="url">
                   数据库设计（一）数据库概述
                 </a>
@@ -425,6 +1336,125 @@
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/07/10/数据库设计（〇）计划/" itemprop="url">
+                  数据库设计（〇）计划
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-07-10T18:53:03+08:00" content="2015-07-10">
+              2015-07-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/07/10/数据库设计（〇）计划/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/10/数据库设计（〇）计划/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-数据库概述"><a href="#1-数据库概述" class="headerlink" title="1. 数据库概述"></a>1. <a href="">数据库概述</a></h2><h2 id="2-数据模型"><a href="#2-数据模型" class="headerlink" title="2. 数据模型"></a>2. <a href="">数据模型</a></h2><h2 id="3-关系数据库"><a href="#3-关系数据库" class="headerlink" title="3. 关系数据库"></a>3. 关系数据库</h2><h2 id="4-SQL"><a href="#4-SQL" class="headerlink" title="4. SQL"></a>4. SQL</h2><h2 id="5-数据库完整性"><a href="#5-数据库完整性" class="headerlink" title="5. 数据库完整性"></a>5. 数据库完整性</h2><h2 id="6-数据库安全性"><a href="#6-数据库安全性" class="headerlink" title="6. 数据库安全性"></a>6. 数据库安全性</h2><h2 id="8-规范化（范式）"><a href="#8-规范化（范式）" class="headerlink" title="8. 规范化（范式）"></a>8. 规范化（范式）</h2><h2 id="9-数据库设计实例：导师信息管理系统"><a href="#9-数据库设计实例：导师信息管理系统" class="headerlink" title="9. 数据库设计实例：导师信息管理系统"></a>9. 数据库设计实例：导师信息管理系统</h2><h2 id="10-扩展1：存储过程"><a href="#10-扩展1：存储过程" class="headerlink" title="10. 扩展1：存储过程"></a>10. 扩展1：存储过程</h2><h2 id="11-扩展2：并发控制"><a href="#11-扩展2：并发控制" class="headerlink" title="11. 扩展2：并发控制"></a>11. 扩展2：并发控制</h2><h2 id="12-扩展3：查询优化"><a href="#12-扩展3：查询优化" class="headerlink" title="12. 扩展3：查询优化"></a>12. 扩展3：查询优化</h2>
+          
+        
+      
+    </div>
+    
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -466,7 +1496,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -474,7 +1504,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -483,7 +1513,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
